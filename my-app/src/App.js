@@ -258,7 +258,10 @@ function App() {
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [identityCompleted, setIdentityCompleted] = useState(false);
-  const [userResponsesIdentity, setUserResponsesIdentity] = useState({});
+
+  // COMMENTING BECAUSE IT'S NOT USED
+  // const [userResponsesIdentity, setUserResponsesIdentity] = useState({});
+  
   const [selectedIdentityOption, setSelectedIdentityOption] = useState(null);
   const [showIdentityQuestions, setShowIdentityQuestions] = useState(false);
 
@@ -300,9 +303,10 @@ const handleCategorySelection = (category) => {
 };
   
 
-  const handleCategoryInterestClick = () => {
-      setCurrentQuestionIndex(0);
-  };
+// COMMENTING BECAUSE IT'S NOT USED
+  // const handleCategoryInterestClick = () => {
+  //     setCurrentQuestionIndex(0);
+  // };
 
   const goToNextCategory = () => {
     if (currentCategoryIndex < selectedCategories.length - 1) {
