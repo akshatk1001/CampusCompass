@@ -1,0 +1,9 @@
+# Virtual Environments
+venv/
+env/
+.venv/
+.env/
+myenv/
+/node_modules
+/build
+.DS_Store

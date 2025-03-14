@@ -1,0 +1,83 @@
+	1.	Community Service
+	2.	Professional Networking
+	3.	Creative Arts
+	4.	Technology Integration
+	5.	Environmental Sustainability
+	6.	Leadership Development
+	7.	Academic Support
+	8.	Cultural Diversity
+	9.	Social Events
+	10.	Innovation and Entrepreneurship
+	11.	Health and Wellness
+	12.	Religious and Spiritual
+	13.	Competitive Teams
+	14.	Engineering Focus
+	15.	Agricultural Practices
+	16.	Sports and Recreation
+	17.	Political Activism
+	18.	Historical Preservation
+	19.	Science and Research
+	20.	Music and Performance
+	21.	Advocacy and Human Rights
+	22.	Corporate Partnerships
+	23.	International Focus
+	24.	Equity and Inclusion
+	25.	STEM Education
+	26.	Literary and Writing
+	27.	Artistic Expression
+	28.	Financial Education
+	29.	Media and Communications
+	30.	Career Readiness
+	31.	Legal Education
+	32.	Safety and Security
+	33.	Volunteer Opportunities
+	34.	Women’s Interests
+	35.	Mental Health
+	36.	Animal Welfare
+	37.	Technology and Coding
+	38.	Outdoor Activities
+	39.	Family and Parenting
+	40.	Culinary Arts
+
+tag_list = [
+    "Community Service",
+    "Professional Networking",
+    "Creative Arts",
+    "Technology Integration",
+    "Environmental Sustainability",
+    "Leadership Development",
+    "Academic Support",
+    "Cultural Diversity",
+    "Social Events",
+    "Innovation and Entrepreneurship",
+    "Health and Wellness",
+    "Religious and Spiritual",
+    "Competitive Teams",
+    "Engineering Focus",
+    "Agricultural Practices",
+    "Sports and Recreation",
+    "Political Activism",
+    "Historical Preservation",
+    "Science and Research",
+    "Music and Performance",
+    "Advocacy and Human Rights",
+    "Corporate Partnerships",
+    "International Focus",
+    "Equity and Inclusion",
+    "STEM Education",
+    "Literary and Writing",
+    "Artistic Expression",
+    "Financial Education",
+    "Media and Communications",
+    "Career Readiness",
+    "Legal Education",
+    "Safety and Security",
+    "Volunteer Opportunities",
+    "Women’s Interests",
+    "Mental Health",
+    "Animal Welfare",
+    "Technology and Coding",
+    "Outdoor Activities",
+    "Family and Parenting",
+    "Culinary Arts"
+]
