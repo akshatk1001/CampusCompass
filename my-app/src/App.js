@@ -260,7 +260,7 @@ function App() {
   const [identityCompleted, setIdentityCompleted] = useState(false);
 
   // COMMENTING BECAUSE IT'S NOT USED
-  // const [userResponsesIdentity, setUserResponsesIdentity] = useState({});
+  const [userResponsesIdentity, setUserResponsesIdentity] = useState({});
   
   const [selectedIdentityOption, setSelectedIdentityOption] = useState(null);
   const [showIdentityQuestions, setShowIdentityQuestions] = useState(false);
