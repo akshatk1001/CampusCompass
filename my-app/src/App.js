@@ -260,7 +260,7 @@ function App() {
   const [identityCompleted, setIdentityCompleted] = useState(false);
 
   // COMMENTING BECAUSE IT'S NOT USED
-  const [userResponsesIdentity, setUserResponsesIdentity] = useState({});
+  // const [userResponsesIdentity, setUserResponsesIdentity] = useState({});
   
   const [selectedIdentityOption, setSelectedIdentityOption] = useState(null);
   const [showIdentityQuestions, setShowIdentityQuestions] = useState(false);
@@ -354,10 +354,10 @@ const handleCategorySelection = (category) => {
   const handleIdentityNext = () => {
     const value = selectedIdentityOption ? selectedIdentityOption.value : null;
     console.log("Recording identity answer:", value);
-    setUserResponsesIdentity((prevResponses) => ({
-      ...prevResponses,
-      [currentQuestionIndex]: value,
-    }));
+    // setUserResponsesIdentity((prevResponses) => ({
+    //   ...prevResponses,
+    //   [currentQuestionIndex]: value,
+    // }));
 
     if (currentQuestionIndex >= questionsForIdentity.length - 1) {
       console.log("All identity questions answered");
