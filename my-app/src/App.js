@@ -230,9 +230,10 @@ function rankClubsBySimilarity(userVector, clubData) {
     const row = clubData[i];
     if (row.length < 41) continue;
     const clubName = row[40];
+    const clubLink = row[41];
     const clubVector = buildClubVectorFromRow(row);
     const similarity = cosineSimilarity(userVector, clubVector);
-    results.push({ clubName, similarity });
+    results.push({ clubName, clubLink, similarity });
   }
   results.sort((a, b) => b.similarity - a.similarity);
   return results.slice(0, 10);
@@ -269,7 +270,7 @@ function App() {
   // ------------------ ONLY CHANGE: Automatically load local CSV ------------------ //
   useEffect(() => {
     // On mount, fetch the CSV from the same folder and parse it with Papa
-    fetch('./ClubsScored.csv')
+    fetch('./csv_folder/26MarchScored.csv')
       .then(response => response.text())
       .then(text => {
         const parsed = Papa.parse(text);
@@ -472,6 +473,7 @@ const handleCategorySelection = (category) => {
             {topClubs.map((club, index) => (
               <div key={index} className="club-item">
                 <h3>{club.clubName}</h3>
+                <button onClick={() => window.open(`${club.clubLink}`, "_blank")}>Click to View!</button>
                 <p>Match: {(club.similarity * 100).toFixed(2)}%</p>
               </div>
             ))}
