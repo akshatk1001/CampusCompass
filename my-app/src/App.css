@@ -8,27 +8,28 @@ body {
     background-color: whitesmoke;
     color: #333;
     line-height: 1.0;
+    /* align-items: center; This is for flex items, not the body's content */
 }
 
 .App {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Centers direct children horizontally */
     justify-content: flex-start;
     min-height: 100vh;
     width: 100%;
-    padding: 0px;
 }
 
 header {
     background-color: #1E4D2B;
     color: #fff;
-    padding: 0; /* Add vertical padding back if needed */
+    padding: 10px 0; /* Add some vertical padding for better spacing */
     text-align: center;
-    width: 110%; /* Ensure header takes full width */
+    width: 100%; /* Changed back to 100% for standard full-width */
     margin: 0;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
 header .title {
@@ -67,8 +68,7 @@ header .title {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     -webkit-text-stroke: 0.5px black;
     padding: 0;
-    margin: 0px;
-    margin-top: 10px;
+    margin: 10px 0px; /* Added some top/bottom margin for spacing */
 }
 
 .survey-box {
@@ -79,11 +79,11 @@ header .title {
     width: 90%;
     max-width: 700px;
     text-align: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    margin: 20px auto 30px auto; /* Added auto left/right margins */
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box; /* Ensure padding is within width */
 }
 
 .survey-title {
@@ -99,31 +99,42 @@ header .title {
     color: #333;
     font-size: 1.8rem;
     margin-bottom: 25px;
+    text-align: center; /* Center the question text itself */
 }
 
 /* Category Selection Button Styles */
+.category-selection-container {
+    width: 100%; /* Make the container full width */
+    display: flex;
+    justify-content: center; /* Center the category-selection div */
+    margin-bottom: 20px; /* Add some space below */
+    box-sizing: border-box;
+    padding: 0 20px; /* Add some padding on the sides for responsiveness */
+}
+
 .category-selection {
     display: flex;
     flex-direction: column; /* Stack buttons on all smaller screens */
-    align-items: center; /* Center the buttons horizontally */
+    align-items: stretch; /* Make buttons take full width of their container */
     gap: 10px;
     max-width: 350px; /* Limit the width of the button container */
-    margin: 20px auto;
-    padding: 0 15px;
+    margin: 0 auto; /* Center the button container */
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .category-button {
     background-color: #F4E9D1;
     color: #1E4D2B;
     border: none;
-    padding: 15px 30px; /* Increased padding for larger touch targets */
-    border-radius: 10px; /* Slightly more rounded */
+    padding: 15px 30px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 1.2rem; /* Larger font size */
+    font-size: 1.2rem;
     transition: background-color 0.3s ease, color 0.3s ease;
     font-family: 'Bebas Neue', serif;
     margin-bottom: 0;
-    width: 100%; /* Make buttons take full width of their container */
+    width: 100%;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     box-sizing: border-box;
@@ -148,13 +159,13 @@ header .title {
     background-color: #C69214;
     color: white;
     border: none;
-    padding: 18px 40px; /* Increased padding */
-    border-radius: 12px; /* More rounded */
+    padding: 18px 40px;
+    border-radius: 12px;
     cursor: pointer;
-    font-size: 1.3rem; /* Larger font */
+    font-size: 1.3rem;
     transition: background-color 0.3s ease;
     font-family: 'Bebas Neue', serif;
-    margin: 30px auto;
+    margin: 30px auto; /* Center the button */
     width: fit-content;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
@@ -169,18 +180,21 @@ header .title {
     -webkit-text-stroke: 0.3px black;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    text-align: center; /* Center the question text */
 }
 
 .category-name {
     font-size: 1.4rem;
     color: #555;
     margin-bottom: 10px;
+    text-align: center; /* Center the category name */
 }
 
 .subcategory-question {
     font-size: 2.2rem;
     color: #333;
     margin-bottom: 20px;
+    text-align: center; /* Center the question text */
 }
 
 .final-title-container {
@@ -197,8 +211,7 @@ header .title {
     color: #1E4D2B;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     -webkit-text-stroke: 0.5px black;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 10px auto; /* Center the title */
     text-align: center;
 }
 
@@ -209,15 +222,16 @@ header .title {
     margin-top: 20px;
     -webkit-text-stroke: 0.3px black;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center the title */
 }
 
 .club-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
-    width: 100%;
+    width: 90%;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 20px auto; /* Center the club list */
     padding: 20px;
     box-sizing: border-box;
 }
@@ -261,8 +275,13 @@ button {
     transition: background-color 0.3s ease;
     font-family: 'Bebas Neue', serif;
     margin: 10px;
-    width: fit-content;
+    width: fit-content; /* Adjust width to content */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: block; /* Make buttons block-level to center with margin auto */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center; /* Center text within the button */
+    flex-direction: row-reverse;
 }
 
 button:hover {
@@ -273,6 +292,7 @@ button:hover {
     color: #777;
     font-size: 1rem;
     margin-top: 15px;
+    text-align: center;
 }
 
 .club-matches-page {
@@ -318,19 +338,23 @@ button:hover {
 
     .category-name {
         font-size: 1.3rem;
+        margin-bottom: 40px;
+    }
+
+    .category-selection-container {
+        padding: 0 10px; /* Adjust padding for smaller screens */
     }
 
     .category-selection {
-        /* Already set to flex column for all smaller screens */
-        max-width: 400px; /* Slightly wider for potentially longer category names */
-        gap: 18px; /* Increased gap */
-        padding: 0 20px;
+        max-width: 400px;
+        gap: 12px;
+        padding: 0;
     }
 
     .category-button {
-        padding: 16px 35px; /* Further increased padding */
-        font-size: 1.3rem; /* Larger font */
-        border-radius: 12px; /* More rounded */
+        padding: 12px 25px;
+        font-size: 1.2rem;
+        border-radius: 8px;
     }
 
     .header-icon, .header-icon-cupid {
@@ -345,27 +369,27 @@ button:hover {
     .club-list {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         padding: 15px;
-        gap: 20px;
+        gap: 15px;
     }
 
     .club-item {
-        padding: 18px;
+        padding: 15px;
     }
 
     .club-item h3 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .club-item p {
-        font-size: 1.05rem;
+        font-size: 1.0rem;
     }
 
     .final-title-container {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px)
     .survey-title {
         font-size: 2rem;
         -webkit-text-stroke: 0.3px black;
@@ -382,23 +406,28 @@ button:hover {
 
     .category-name {
         font-size: 1.1rem;
+        margin-top: 30px;
     }
 
     .subcategory-question {
         font-size: 2rem;
+        margin: 20px;
+    }
+
+    .category-selection-container {
+        padding: 0 5px;
     }
 
     .category-selection {
-        max-width: 90%; /* Allow buttons to take up more horizontal space */
-        gap: 15px; /* Further increased gap */
-        padding: 0 25px;
-        margin-bottom: 0px;
+        max-width: 95%;
+        gap: 10px;
+        padding: 0;
     }
 
     .category-button {
-        padding: 18px 40px; /* Even more padding */
-        font-size: 1.4rem; /* Even larger font */
-        border-radius: 14px;
+        padding: 14px 30px;
+        font-size: 1.3rem;
+        border-radius: 8px;
     }
 
     .club-cupid-title {
@@ -406,15 +435,12 @@ button:hover {
     }
 
     .club-list {
-        grid-template-columns: 1fr; /* Force single column on very small screens */
+        grid-template-columns: 1fr;
     }
 
     .club-item {
         width: 95%;
-        padding: 20px;
+        padding: 15px;
     }
 
-    .final-title-container {
-        margin-bottom: 15px;
-    }
-}
+
