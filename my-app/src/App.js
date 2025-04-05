@@ -474,7 +474,7 @@ const handleCategorySelection = (category) => {
             {topClubs.map((club, index) => (
               <div key={index} className="club-item">
                 <h3>{club.clubName}</h3>
-                <button onClick={() => window.open(`${club.clubLink}`, "_blank")}>Click to View!</button>
+                <button onClick={() => window.open(`${club.clubLink}`, "_blank")}>Click to View</button>
                 <p>Match: {(club.similarity * 100).toFixed(2)}%</p>
               </div>
             ))}
