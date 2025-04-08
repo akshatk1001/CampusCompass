@@ -3,7 +3,7 @@ import pandas as pd
 import torch
 from sklearn import preprocessing
 
-DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
+DEVICE = "mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"
 model = SentenceTransformer("all-MiniLM-L6-v2")
 df = pd.read_csv("NicosScrapedData.csv")
 
@@ -42,15 +42,15 @@ all_identities = [
     # "Microbiology", "Physics", "Public Health", "Statistics"
 ]
 
-all_embeddings = model.encode(name_desc, show_progress_bar=True, device=DEVICE)
+description_embeddings = model.encode(name_desc, show_progress_bar=True, device=DEVICE)
 tags_embedding = model.encode(all_identities, show_progress_bar=True, device=DEVICE)
 
-similarity_matrix = model.similarity(all_embeddings, tags_embedding)
+similarity_matrix = model.similarity(description_embeddings, tags_embedding) # rows are descriptions, columns are tags
 
 min_max_scaler = preprocessing.MinMaxScaler()
 scaled_similarity_matrix = min_max_scaler.fit_transform(similarity_matrix)
 
-sim_df = pd.DataFrame(scaled_similarity_matrix, columns= all_identities)
+sim_df = pd.DataFrame(scaled_similarity_matrix, columns = all_identities)
 sim_df.insert(loc = 0, column = "Club Name", value = df["Club Name"])
 sim_df["Description"] = name_desc
 
@@ -62,63 +62,91 @@ sim_df["Description"] = name_desc
 # 10:14 -> 
 # 15:end major
 
-race_thresh = 0.6
-race_cols = [ "White European Italian", "Black African American", "Native American", "Asian", "Hawaiian Pacific Islander"]
+def race_threhold(thresh_value, race_list, dataframe, races_start_index):
+    for index, row in dataframe.iterrows():
+        race_vals = row[race_list].to_list()
+        maximum_race_val = max(race_vals)
+        minimum_race_val = min(race_vals)
+        max_val_index = race_vals.index(maximum_race_val)
 
-for index, row in sim_df.iterrows():
-    # race: threshold 0.6 and whatever is remaining take the highest value and set it to 1.0, Set the rest to 0.0
-    race_list = row[1:5].to_list()
-    maximum = max(race_list)
-    minimum = min(race_list)
-    max_index = race_list.index(maximum)
+        for col in race_list:
+            dataframe.loc[index, col] = 0.0 # MIGHT have to set to 0.5 
 
-    for col in race_cols:
-        sim_df.loc[index, col] = 0.0 # MIGHT have to set to 0.5 
-
-    if minimum >= race_thresh:
-        for col in race_cols:
-            sim_df.loc[index, col] = 1.0
-            
-    elif maximum > race_thresh:
-        sim_df.loc[index, race_cols[max_index]] = 1.0
-
-    # gender: use for loop to check for specific word. After, do thresholding with a value of 0.5. If both above or below 0.5, set to 1.0 for both. Otherwise, set larger to 1.0, and the other to 0.0. 
-    women_list = ["woman", "woman's", "women", "women's", "womens", "sisterhood", "sister", "sisters", "sorority"]
-    men_list = ["man", "man's", "men", "men's", "mens", "brotherhood", "brother", "brothers"]
-
-    club_name = sim_df.loc[index, "Description"]
+        if minimum_race_val >= thresh_value:
+            for col in race_list:
+                dataframe.loc[index, col] = 1.0
+        
+        elif maximum_race_val > thresh_value:
+            dataframe.loc[index, race_list[max_val_index]] = 1.0
 
 
-    found = None
-    gender_thresh = 0.575
+def gender_threshold(dataframe, thresh_value):
+    women_list = {"woman", "woman's", "women", "women's", "womens", "sisterhood", "sister", "sisters", "sorority"}
+    men_list = {"man", "man's", "men", "men's", "mens", "brotherhood", "brother", "brothers"}
 
-    for word in str(club_name).split():
-        if word in women_list:
-            found = "woman"
-            break
-        elif word in men_list:
-            found = "man"
-            break
+    for index, row in dataframe.iterrows():
+        description = sim_df.loc[index, "Description"]
+        found = None
 
-    if found == "man":
-        sim_df.loc[index, "woman women"] = 0.0
-        sim_df.loc[index, "man men"] = 1.0
-    elif found == "woman":
-        sim_df.loc[index, "woman women"] = 1.0
-        sim_df.loc[index, "man men"] = 0.0
-    else:
-        woman_score = sim_df.loc[index, "woman women"]
-        man_score = sim_df.loc[index, "man men"]
-
-        if (woman_score >= gender_thresh and man_score >= gender_thresh) or (woman_score < gender_thresh and man_score < gender_thresh):
-            sim_df.loc[index, "woman women"] = 1.0
-            sim_df.loc[index, "man men"] = 1.0
-        elif woman_score > man_score:
-            sim_df.loc[index, "woman women"] = 1.0
-            sim_df.loc[index, "man men"] = 0.0
+        for word in str(description).lower().split():
+            if word in women_list:
+                found = "woman"
+                break
+            elif word in men_list:
+                found = "man"
+                break
+        
+        if found == "man":
+            dataframe.loc[index, "woman women"] = 0.0
+            dataframe.loc[index, "man men"] = 1.0
+        elif found == "woman":
+            dataframe.loc[index, "woman women"] = 1.0
+            dataframe.loc[index, "man men"] = 0.0
         else:
-            sim_df.loc[index, "woman women"] = 0.0
-            sim_df.loc[index, "man men"] = 1.0
+            woman_score = dataframe.loc[index, "woman women"]
+            man_score = dataframe.loc[index, "man men"]
+
+            if (woman_score >= thresh_value and man_score >= thresh_value) or (woman_score < thresh_value and man_score < thresh_value):
+                dataframe.loc[index, "woman women"] = 1.0
+                dataframe.loc[index, "man men"] = 1.0
+            elif woman_score > man_score:
+                dataframe.loc[index, "woman women"] = 1.0
+                dataframe.loc[index, "man men"] = 0.0
+            else:
+                dataframe.loc[index, "woman women"] = 0.0
+                dataframe.loc[index, "man men"] = 1.0
 
 
-sim_df.to_csv('IdentityScored.csv', index=False)
+def greek_life_threshold(dataframe, thresh_value):
+    greek_life_list = {"greek", "fraternity", "sorority", "brotherhood", "sisterhood", "brothers", "sisters",
+                       "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa",
+                       "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon",
+                       "phi", "chi", "psi", "omega"}
+
+    for index, row in dataframe.iterrows():
+        description = row["Description"]
+        found = None
+        for word in str(description).lower().split():
+            if word in greek_life_list:
+                found = "greek"
+                break
+
+        if found == "greek":
+            dataframe.loc[index, "Greek"] = 1.0
+        else:
+            dataframe.loc[index, "Greek"] = 0.0
+
+
+def main():
+    racelist = ["White European Italian", "Black African American", "Native American", "Asian", "Hawaiian Pacific Islander"]
+
+    race_threhold(0.6, racelist, sim_df, 1)
+    gender_threshold(sim_df, 0.575)
+    greek_life_threshold(sim_df, 0.7)
+
+    sim_df.to_csv('IdentityScored.csv', index=False)
+
+    print(f"Device is {DEVICE}")
+
+if __name__ == "__main__":
+    main()
