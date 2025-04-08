@@ -425,6 +425,7 @@ const handleCategorySelection = (category) => {
           <div className="final-title-container">
             <h1 className="matchmaker-title">Cal Poly<br />Matchmaker</h1>
           </div>
+        </header>
           <div className="question-block">
             <h2 className="category-name">Identity Questions</h2>
             {!showIdentityQuestions && (
@@ -453,7 +454,6 @@ const handleCategorySelection = (category) => {
 
             
           </div>
-        </header>
       </div>
     );
   }
@@ -466,6 +466,7 @@ const handleCategorySelection = (category) => {
           <div className="final-title-container">
             <h1 className="matchmaker-title">Cal Poly<br />Matchmaker</h1>
           </div>
+        </header>
           <h2 className="top-matches-title">Here are your top club matches!</h2>
           <button onClick={() => window.open("https://now.calpoly.edu/organizations", "_blank")}>Go See All Clubs</button>
           <button onClick={() => window.location.reload()}>Retake Quiz</button>
@@ -473,12 +474,11 @@ const handleCategorySelection = (category) => {
             {topClubs.map((club, index) => (
               <div key={index} className="club-item">
                 <h3>{club.clubName}</h3>
-                <button onClick={() => window.open(`${club.clubLink}`, "_blank")}>Click to View!</button>
+                <button onClick={() => window.open(`${club.clubLink}`, "_blank")}>Click to View</button>
                 <p>Match: {(club.similarity * 100).toFixed(2)}%</p>
               </div>
             ))}
           </div>
-        </header>
       </div>
     );
   }
@@ -490,6 +490,7 @@ const handleCategorySelection = (category) => {
           <div className="logo-title-container">
             <h1 className="matchmaker-title">Cal Poly<br />Matchmaker</h1>
           </div>
+                  </header>
           <h2 className="survey-title">Select up to 3 categories</h2>
           <div className="category-selection-container">
           <div className="category-selection">
@@ -512,7 +513,6 @@ const handleCategorySelection = (category) => {
             Start Quiz
         </button>
 
-        </header>
       </div>
     );
   }
@@ -526,6 +526,7 @@ const handleCategorySelection = (category) => {
         <div className="logo-title-container">
           <h1 className="matchmaker-title">Cal Poly<br />Matchmaker</h1>
         </div>
+      </header>
         <div className="question-block">
           <h3 className="category-name">{categoryName}</h3>
           <h2 className="subcategory-question">{currentQuestion[0]}</h2>
@@ -533,7 +534,6 @@ const handleCategorySelection = (category) => {
           <button onClick={() => handleSubQuestionAnswer(currentQuestion[1], true)}>Yes</button>
           <button onClick={() => handleSubQuestionAnswer(currentQuestion[1], false)}>No</button>
         </div>
-      </header>
     </div>
   );
 }
