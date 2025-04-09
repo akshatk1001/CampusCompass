@@ -85,31 +85,33 @@ const IDENTITY_QUESTIONS = {
 
 const IDENTITY_OPTIONS = {
   "What gender do you identify the most with?": [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
+    { value: 'man men', label: 'Male' },
+    { value: 'woman women', label: 'Female' },
     { value: 'nonbinary', label: 'Non-binary' },
-    { value: 'other', label: 'Other' }
+    { value: 'other', label: 'Other/Decline To Say' }
   ],
   "What race do you identify the most with?": [
-    { value: 'asian', label: 'Asian' },
-    { value: 'black', label: 'Black' },
-    { value: 'hispanic', label: 'Hispanic' },
-    { value: 'white', label: 'White' },
-    { value: 'other', label: 'Other' }
+    { value: 'White European Italian', label: 'White' },
+    { value: 'Black African American', label: 'Black or African American' },
+    { value: 'Native American', label: 'American Indian or Alaska Native' },    
+    { value: 'Asian', label: 'Asian' },
+    { value: 'Hispanic', label: 'Hispanic' },
+    { value: 'Native Hawaiian or Other Pacific Islander', label: 'Native Hawaiian or Other Pacific Islander' },
+    { value: 'other', label: 'Other/Decline To Say' }
   ],
   "What is your major?": [
     { value: 'engineering', label: 'Engineering' },
     { value: 'business', label: 'Business' },
     { value: 'arts', label: 'Arts' },
     { value: 'science', label: 'Science' },
-    { value: 'other', label: 'other' }
+    { value: 'other', label: 'Other/Decline To Say' }
   ],
   "What religion do you identify the most with?": [
     { value: 'christianity', label: 'Christianity' },
     { value: 'islam', label: 'Islam' },
     { value: 'hinduism', label: 'Hinduism' },
     { value: 'buddhism', label: 'Buddhism' },
-    { value: 'other', label: 'Other' }
+    { value: 'other', label: 'Other/Decline To Say' }
   ]
 };
 
