@@ -224,7 +224,34 @@ function cosineSimilarity(vecA, vecB) { // This function takes two vectors and r
   return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
-function rankClubsBySimilarity(userVector, clubData) {
+function filterOutClubs(userIdentityVector, identityData, results){
+  //Merging the identity scores with the cosine similarity scores based on club name
+  // Create a Map from results, with clubName as the key.
+  const resultsMap = new Map();
+  results.forEach(result => {
+    resultsMap.set(result.clubName, result);
+  });
+
+
+  const identityResults = identityData
+    .filter(row => resultsMap.has(row.clubName))
+    .map(row => {
+      // Merge the dataframe row with the corresponding results entry
+      return { ...row, ...resultsMap.get(row.clubName) };
+    });
+
+  console.log(identityResults);
+  return identityResults;
+  //iterate thru results until there are 10 clubs in new results
+  //filter out clubs that do not match with identity.
+
+  //gender must be 1 for both
+  //race must be 1 for both
+
+}
+
+
+function rankClubsBySimilarity(userVector, clubData, userIdentityVector, identityData) {
   let results = [];
   for (let i = 1; i < clubData.length; i++) {
     const row = clubData[i];
@@ -235,13 +262,15 @@ function rankClubsBySimilarity(userVector, clubData) {
     const similarity = cosineSimilarity(userVector, clubVector);
     results.push({ clubName, clubLink, similarity });
   }
-  results.sort((a, b) => b.similarity - a.similarity);
+  results.sort((a, b) => b.similarity - a.similarity); //this sorts so most similar is on top
+  //filterOutClubs(userIdentityVector, identityData, results)
   return results.slice(0, 10);
 }
 
 // -------------------- 3. MAIN REACT COMPONENT --------------------
 function App() {
   const [clubData, setClubData] = useState([]);
+  const [identityData, setIdentityData] = useState([]);
   const categoryKeys = Object.keys(CATEGORY_QUESTIONS);
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -261,7 +290,7 @@ function App() {
   const [identityCompleted, setIdentityCompleted] = useState(false);
 
   // COMMENTING BECAUSE IT'S NOT USED
-  // const [userResponsesIdentity, setUserResponsesIdentity] = useState({});
+  const [userResponsesIdentity, setUserResponsesIdentity] = useState({});
   
   const [selectedIdentityOption, setSelectedIdentityOption] = useState(null);
   const [showIdentityQuestions, setShowIdentityQuestions] = useState(false);
@@ -282,6 +311,17 @@ function App() {
   useEffect(() => {
     setSelectedIdentityOption(null);
   }, [currentQuestionIndex]);
+
+  useEffect(() => {
+    // On mount, fetch the CSV from the same folder and parse it with Papa
+    fetch('./csv_folder/IdentityScored.csv')
+      .then(response => response.text())
+      .then(text => {
+        const parsed = Papa.parse(text);
+        console.log("CSV identity data loaded:", parsed);
+        setIdentityData(parsed.data);
+      });
+  }, []);
   // ------------------------------------------------------------------------------ //
 
   const handleStartQuiz = () => {
@@ -355,13 +395,15 @@ const handleCategorySelection = (category) => {
   const handleIdentityNext = () => {
     const value = selectedIdentityOption ? selectedIdentityOption.value : null;
     console.log("Recording identity answer:", value);
-    // setUserResponsesIdentity((prevResponses) => ({
-    //   ...prevResponses,
-    //   [currentQuestionIndex]: value,
-    // }));
+    setUserResponsesIdentity((prevResponses) => ({
+      ...prevResponses,
+      [currentQuestionIndex]: value,
+    }));
+   
 
     if (currentQuestionIndex >= questionsForIdentity.length - 1) {
       console.log("All identity questions answered");
+      console.log(userResponsesIdentity);
       setIdentityCompleted(true);
     } else {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
@@ -408,7 +450,7 @@ const handleCategorySelection = (category) => {
       //console.log("tag: " + tagId + "," + finalScores[tagId]);
       userVector.push(finalScores[tagId] || 0);
     }
-    const topTen = rankClubsBySimilarity(userVector, clubData);
+    const topTen = rankClubsBySimilarity(userVector, clubData, identityData);
     setTopClubs(topTen);
     setCurrentQuestionIndex(0);
     setSurveyComplete(true);
