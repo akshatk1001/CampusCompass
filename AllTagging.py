@@ -11,38 +11,6 @@ name_desc = df["Club Name"] + " " + df["Description Excerpt"]
 
 # maybe add lgbtq tag
 all_identities = [
-    "White European Italian", # Caucasian
-    "Black African American", # African American
-    "Native American", # Native American
-    "Asian", # Asian American
-    "Hispanic", # Hispanic
-    "Native Hawaiian or Other Pacific Islander", # AAPI
-    "woman women",
-    "man men",
-    "Greek", 
-    "lgbtq",
-    "Christian",
-    "Islam",
-    "Jewish Community and Judaism",
-    "Hindu",
-    "Buddhism",
-    "Muslim",
-    "Sikh"
-    # "Agricultural and Environmental Plant Sciences", "Agricultural Business", "Agricultural Communication",
-    # "Agricultural Science", "Agricultural Systems Management", "Animal Science", "BioResource and Agricultural Engineering",
-    # "Dairy Science", "Environmental Earth and Soil Sciences", "Environmental Management and Protection", "Food Science",
-    # "Forestry and Natural Resources", "Nutrition", "Recreation, Parks and Tourism Administration", "Wine and Viticulture",
-    # "Architectural Engineering", "Architecture", "City and Regional Planning", "Construction Management", "Landscape Architecture",
-    # "Business Administration", "Economics", "Industrial Technology and Packaging",
-    # "Aerospace Engineering", "Biomedical Engineering", "Civil Engineering", "Computer Engineering", "Computer Science",
-    # "Electrical Engineering", "Environmental Engineering", "General Engineering", "Industrial Engineering",
-    # "Manufacturing Engineering", "Materials Engineering", "Mechanical Engineering", "Software Engineering",
-    # "Art and Design", "Communication Studies", "English", "Ethnic Studies", "Graphic Communication", "History",
-    # "Interdisciplinary Studies", "Journalism", "Liberal Arts and Engineering Studies", "Music", "Philosophy",
-    # "Political Science", "Psychology", "Sociology", "Theatre Arts", "Women's, Gender and Queer Studies",
-    # "World Languages and Cultures",
-    # "Biochemistry", "Biological Sciences", "Chemistry", "Kinesiology", "Liberal Studies", "Mathematics",
-    # "Microbiology", "Physics", "Public Health", "Statistics",
     "Volunteering",
     "Networking",
     "Visual Arts",
@@ -82,7 +50,45 @@ all_identities = [
     "Coding",
     "Outdoor Adventures",
     "Family Support",
-    "Culinary Arts"
+    "Culinary Arts",
+    #______________ Identity stuff _________________
+    #Gender
+    "woman women",
+    "man men",
+    "lgbtq",
+    #Race
+    "White European Italian", # Caucasian
+    "Black African American", # African American
+    "Native American", # Native American
+    "Asian", # Asian American
+    "Hispanic", # Hispanic
+    "Native Hawaiian or Other Pacific Islander", # AAPI
+    #Greek life
+    "Greek", 
+    #Religion
+    "Christian",
+    "Islam",
+    "Jewish Community and Judaism",
+    "Hindu",
+    "Buddhism",
+    "Muslim",
+    "Sikh"
+    #Major
+    # "Agricultural and Environmental Plant Sciences", "Agricultural Business", "Agricultural Communication",
+    # "Agricultural Science", "Agricultural Systems Management", "Animal Science", "BioResource and Agricultural Engineering",
+    # "Dairy Science", "Environmental Earth and Soil Sciences", "Environmental Management and Protection", "Food Science",
+    # "Forestry and Natural Resources", "Nutrition", "Recreation, Parks and Tourism Administration", "Wine and Viticulture",
+    # "Architectural Engineering", "Architecture", "City and Regional Planning", "Construction Management", "Landscape Architecture",
+    # "Business Administration", "Economics", "Industrial Technology and Packaging",
+    # "Aerospace Engineering", "Biomedical Engineering", "Civil Engineering", "Computer Engineering", "Computer Science",
+    # "Electrical Engineering", "Environmental Engineering", "General Engineering", "Industrial Engineering",
+    # "Manufacturing Engineering", "Materials Engineering", "Mechanical Engineering", "Software Engineering",
+    # "Art and Design", "Communication Studies", "English", "Ethnic Studies", "Graphic Communication", "History",
+    # "Interdisciplinary Studies", "Journalism", "Liberal Arts and Engineering Studies", "Music", "Philosophy",
+    # "Political Science", "Psychology", "Sociology", "Theatre Arts", "Women's, Gender and Queer Studies",
+    # "World Languages and Cultures",
+    # "Biochemistry", "Biological Sciences", "Chemistry", "Kinesiology", "Liberal Studies", "Mathematics",
+    # "Microbiology", "Physics", "Public Health", "Statistics",
 ]
 
 description_embeddings = model.encode(name_desc, show_progress_bar=True, device=DEVICE)
@@ -95,6 +101,7 @@ scaled_similarity_matrix = min_max_scaler.fit_transform(similarity_matrix)
 
 sim_df = pd.DataFrame(scaled_similarity_matrix, columns = all_identities)
 sim_df.insert(loc = 0, column = "Club Name", value = df["Club Name"])
+sim_df.insert(loc = 1, column = "links", value = df["tablescraper-selected-row href"])
 sim_df["Description"] = name_desc
 
 def race_threshold(thresh_value, race_list, dataframe):
@@ -192,7 +199,7 @@ def main():
     greek_life_threshold(sim_df)
     lgbtq_threshold(sim_df, 0.65)
 
-    sim_df.to_csv('IdentityScored.csv', index=False)
+    sim_df.to_csv('tagsAndIdentity.csv', index=False)
 
     print(f"Device is {DEVICE}")
 
