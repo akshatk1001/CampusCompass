@@ -11,20 +11,23 @@ name_desc = df["Club Name"] + " " + df["Description Excerpt"]
 
 # maybe add lgbtq tag
 all_identities = [
-    "White European Italian",
-    "Black African American",
-    "Native American",
-    "Asian",
-    "Hawaiian Pacific Islander",
+    "White European Italian", # Caucasian
+    "Black African American", # African American
+    "Native American", # Native American
+    "Asian", # Asian American
+    "Hispanic", # Hispanic
+    "Native Hawaiian or Other Pacific Islander", # AAPI
     "woman women",
     "man men",
-    "Greek"
-    # ,
-    # "Christian",
-    # "Islam",
-    # "Judaism",
-    # "Hinduism",
-    # "Buddhism",
+    "Greek", 
+    "lgbtq",
+    "Christian",
+    "Islam",
+    "Judaism",
+    "Hinduism",
+    "Buddhism",
+    "Muslim",
+    "Sikh"
     # "Agricultural and Environmental Plant Sciences", "Agricultural Business", "Agricultural Communication",
     # "Agricultural Science", "Agricultural Systems Management", "Animal Science", "BioResource and Agricultural Engineering",
     # "Dairy Science", "Environmental Earth and Soil Sciences", "Environmental Management and Protection", "Food Science",
@@ -62,7 +65,7 @@ sim_df["Description"] = name_desc
 # 10:14 -> 
 # 15:end major
 
-def race_threhold(thresh_value, race_list, dataframe, races_start_index):
+def race_threshold(thresh_value, race_list, dataframe):
     for index, row in dataframe.iterrows():
         race_vals = row[race_list].to_list()
         maximum_race_val = max(race_vals)
@@ -136,13 +139,22 @@ def greek_life_threshold(dataframe, thresh_value):
         else:
             dataframe.loc[index, "Greek"] = 0.0
 
+def lgbtq_threshold(dataframe, thresh_value):
+    for index, row in dataframe.iterrows():
+        lgbtq_score = row["lgbtq"]
+        if lgbtq_score >= thresh_value:
+            dataframe.loc[index, "lgbtq"] = 1.0
+        else:
+            dataframe.loc[index, "lgbtq"] = 0.0
+
 
 def main():
-    racelist = ["White European Italian", "Black African American", "Native American", "Asian", "Hawaiian Pacific Islander"]
+    racelist = ["White European Italian", "Black African American", "Native American", "Hispanic", "Asian", "Native Hawaiian or Other Pacific Islander"]
 
-    race_threhold(0.6, racelist, sim_df, 1)
+    race_threshold(0.6, racelist, sim_df)
     gender_threshold(sim_df, 0.575)
     greek_life_threshold(sim_df, 0.7)
+    lgbtq_threshold(sim_df, 0.65)
 
     sim_df.to_csv('IdentityScored.csv', index=False)
 
