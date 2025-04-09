@@ -111,8 +111,12 @@ def race_threshold(thresh_value, race_list, dataframe):
             for col in race_list:
                 dataframe.loc[index, col] = 1.0
         
-        elif maximum_race_val > thresh_value:
+        elif maximum_race_val >= thresh_value:
             dataframe.loc[index, race_list[max_val_index]] = 1.0
+
+        elif maximum_race_val < thresh_value:
+            for col in race_list:
+                dataframe.loc[index, col] = 1
 
 
 def gender_threshold(dataframe, thresh_value):
