@@ -931,25 +931,35 @@ function App() {
 
   // Load club data CSV on mount.
   useEffect(() => {
-    fetch('./csv_folder/26MarchScored.csv')
+    fetch('./csv_folder/tagsAndIdentity.csv')
       .then(response => response.text())
       .then(text => {
         const parsed = Papa.parse(text);
         console.log("CSV data loaded:", parsed);
-        setClubData(parsed.data);
+
+        const clubData = []
+        const identityData = []
+
+        parsed.data.forEach(row => {
+          clubData.push(row.slice(0,42));
+          identityData.push(row.slice(42));
+        });
+        setClubData(clubData);
+        setIdentityData(identityData);
       });
   }, []);
 
-  // Load identity data CSV on mount.
-  useEffect(() => {
-    fetch('./csv_folder/IdentityScored.csv')
-      .then(response => response.text())
-      .then(text => {
-        const parsed = Papa.parse(text);
-        console.log("CSV identity data loaded:", parsed);
-        setIdentityData(parsed.data);
-      });
-  }, []);
+  // Only needed if we load in identiy and clubs separately
+  // // Load identity data CSV on mount.
+  // useEffect(() => {
+  //   fetch('./csv_folder/IdentityScored.csv')
+  //     .then(response => response.text())
+  //     .then(text => {
+  //       const parsed = Papa.parse(text);
+  //       console.log("CSV identity data loaded:", parsed);
+  //       setIdentityData(parsed.data);
+  //     });
+  // }, []);
 
   useEffect(() => {
     setSelectedIdentityOption(null);
