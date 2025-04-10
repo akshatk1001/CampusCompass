@@ -67,17 +67,12 @@ def race_threshold(thresh_value, race_list, dataframe):
         for col in race_list:
             dataframe.loc[index, col] = 0.0 # MIGHT have to set to 0.5 
 
-        if minimum_race_val >= thresh_value:
+        if minimum_race_val >= thresh_value or maximum_race_val < thresh_value:
             for col in race_list:
                 dataframe.loc[index, col] = 1.0
 
         elif maximum_race_val >= thresh_value:
             dataframe.loc[index, race_list[max_val_index]] = 1.0
-
-        elif maximum_race_val < thresh_value:
-            for col in race_list:
-                dataframe.loc[index, col] = 1
-
 
 
 def gender_threshold(dataframe, thresh_value):
@@ -148,10 +143,10 @@ def lgbtq_threshold(dataframe, thresh_value):
 def main():
     racelist = ["White European Italian", "Black African American", "Native American", "Hispanic", "Asian", "Native Hawaiian or Other Pacific Islander"]
 
-    race_threshold(0.6, racelist, sim_df)
-    gender_threshold(sim_df, 0.575)
-    greek_life_threshold(sim_df)
-    lgbtq_threshold(sim_df, 0.65)
+    race_threshold(0.6, racelist, sim_df) # The largest race value is set to 1.0 as long as it's above 0.6. Otherwise they are all set to 1.0. 
+    gender_threshold(sim_df, 0.575) # If the name/desc contains the gender in it, set it to 1.0. Otherwise, if both are above or below 0.575, set them both to 1.0. Otherwise, set the larger one to 1.0 and the smaller one to 0.0.
+    greek_life_threshold(sim_df) # If the name/desc contains greek life in it, set it to 1.0. Otherwise, set it to 0.0.
+    lgbtq_threshold(sim_df, 0.65) # If the lgbtq score above 0.65, set it to 1.0. Otherwise, set it to 0.0.
 
     sim_df.to_csv('IdentityScored.csv', index=False)
 
