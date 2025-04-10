@@ -828,8 +828,8 @@ function calcUserTagScores(userTags) {
 // Extracts the club's tag vector from a CSV row.
 function buildClubVectorFromRow(row) { // This function takes a row of data from the CSV file and returns a vector of tag scores for that club for cosine simiarity
   const vector = []; // Initialize an empty list to store the tag scores
-  for (let tagId = 0; tagId <= 39; tagId++) { // Iterate over each tag number from 1 to 40
-    vector.push(parseFloat(row[tagId])); // Add the tag score for the current tag to the vector
+  for (let columnNumber = 0; columnNumber < row.length; columnNumber++) { // Iterate over each tag number from 1 to 40
+    vector.push(parseFloat(row[columnNumber])); // Add the tag score for the current tag to the vector
   }
   return vector; // Return the vector of tag scores
 }
@@ -850,28 +850,34 @@ function cosineSimilarity(vecA, vecB) { // This function takes two vectors and r
 
 // Ranks clubs by combining category similarity and identity similarity.
 function rankClubsBySimilarity(userVector, clubData, userIdentityVector, identityData) {
+  // BIG NOTEEEEE: ASSUMING THAT CLUBDATA ONLY CONTAINS THE IDENTITIES THAT MATCH UP WITH THE USERS IDENTITIES. first 2 cols are name and link
+  // ALSO ASSUMING USER VECTOR CONTAINS ****BOTH**** TAG VALUES FOR USER *****AND***** IDENTITY VALUES FOR USER
+  // note that the identities for the user should all be a value of 2.0
   let results = [];
   for (let i = 1; i < clubData.length; i++) {
     const row = clubData[i];
     const clubName = row[0];
     const clubLink = row[1];
-    const clubVector = buildClubVectorFromRow(row);
+    const clubVector = buildClubVectorFromRow(row.slice(2)); // Since the first two columns are club name and link
     const categorySimilarity = cosineSimilarity(userVector, clubVector);
     
-    let identitySimilarity = 0;
-    // Find the identity row matching this club (assuming first column is club name)
-    const identityRow = identityData.find(r => r[0] === clubName);
-    if (identityRow) {
-      let clubIdentityVector = [];
-      // The identity CSV is assumed to have identity scores in columns 1 to ALL_IDENTITIES.length
-      for (let j = 1; j <= ALL_IDENTITIES.length; j++) {
-        clubIdentityVector.push(parseFloat(identityRow[j]));
-      }
-      identitySimilarity = cosineSimilarity(userIdentityVector, clubIdentityVector);
-    }
-    // Combine category similarity with identity similarity (weighted by 2.0)
-    const finalSimilarity = categorySimilarity + (2 * identitySimilarity);
-    results.push({ clubName, clubLink, similarity: finalSimilarity });
+  // shouldnt need this now becasue of above assumptions. we just have to edit the call to this function. 
+
+
+    // let identitySimilarity = 0;
+    // // Find the identity row matching this club (assuming first column is club name)
+    // const identityRow = identityData.find(r => r[0] === clubName);
+    // if (identityRow) {
+    //   let clubIdentityVector = [];
+    //   // The identity CSV is assumed to have identity scores in columns 1 to ALL_IDENTITIES.length
+    //   for (let j = 1; j <= ALL_IDENTITIES.length; j++) {
+    //     clubIdentityVector.push(parseFloat(identityRow[j]));
+    //   }
+    //   identitySimilarity = cosineSimilarity(userIdentityVector, clubIdentityVector);
+    // }
+    // // Combine category similarity with identity similarity (weighted by 2.0)
+    // const finalSimilarity = categorySimilarity + (2 * identitySimilarity);
+    results.push({ clubName, clubLink, similarity: categorySimilarity });
   }
   results.sort((a, b) => b.similarity - a.similarity);
   return results.slice(0, 10);
