@@ -643,6 +643,50 @@ const ALL_TAGS = {
   40: ["Culinary Arts", 40]
 };
 
+const TAG_LIST = [
+  "Volunteering",
+  "Networking",
+  "Visual Arts",
+  "Software Development",
+  "Sustainability",
+  "Leadership",
+  "Tutoring",
+  "Cultural Awareness",
+  "Socializing",
+  "Entrepreneurship",
+  "Fitness",
+  "Spirituality",
+  "Competitive Gaming",
+  "Engineering",
+  "Agriculture",
+  "Recreation",
+  "Activism",
+  "Historical Studies",
+  "Research",
+  "Performing Arts",
+  "Human Rights",
+  "Corporate Relations",
+  "International Relations",
+  "Inclusion",
+  "STEM Education",
+  "Creative Writing",
+  "Artistic Design",
+  "Financial Literacy",
+  "Digital Media",
+  "Career Development",
+  "Legal Studies",
+  "Campus Security",
+  "Community Outreach",
+  "Women's Empowerment",
+  "Mental Wellness",
+  "Animal Rights",
+  "Coding",
+  "Outdoor Adventures",
+  "Family Support",
+  "Culinary Arts"
+];
+
+
 // IMPORTANT: Define identity tags; these will be used with a matching weight of 2.0.
 const ALL_IDENTITIES = [
   "White European Italian",
@@ -848,35 +892,41 @@ function cosineSimilarity(vecA, vecB) { // This function takes two vectors and r
   return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
-// Ranks clubs by combining category similarity and identity similarity.
-function rankClubsBySimilarity(userVector, clubData, userIdentityVector, identityData) {
-  // BIG NOTEEEEE: ASSUMING THAT CLUBDATA ONLY CONTAINS THE IDENTITIES THAT MATCH UP WITH THE USERS IDENTITIES. first 2 cols are name and link
-  // ALSO ASSUMING USER VECTOR CONTAINS ****BOTH**** TAG VALUES FOR USER *****AND***** IDENTITY VALUES FOR USER
-  // note that the identities for the user should all be a value of 2.0
+function keepColumnsAsArray(data, columnsToKeep, mapping) {
+  return data.map(row => columnsToKeep.map(col => row[mapping[col]]));
+}
+
+// function filterClubColumns(clubData, columnsToKeep) {
+//   return clubData.map(row => {
+//     const filteredRow = {};
+//     columnsToKeep.forEach(col => {
+//       if (col in row) {
+//         filteredRow[col] = row[col];
+//         console.log(row[col]);
+//       }
+//     });
+//     return filteredRow;
+//   });
+// }
+
+
+
+
+
+function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols) {
+  const { headerMapping, rows } = clubDataObj;
+  const allCols = ["Club Name", "links", ...TAG_LIST, ...userIdentityCols];
+  const userFilteredData = keepColumnsAsArray(rows, allCols, headerMapping);
+  console.log("Filtered Data: ", userFilteredData);
+
   let results = [];
-  for (let i = 1; i < clubData.length; i++) {
-    const row = clubData[i];
+  // Start at index 1 to skip header row if needed.
+  for (let i = 1; i < userFilteredData.length; i++) {
+    const row = userFilteredData[i];
     const clubName = row[0];
     const clubLink = row[1];
-    const clubVector = buildClubVectorFromRow(row.slice(2)); // Since the first two columns are club name and link
+    const clubVector = row.slice(2).map(val => parseFloat(val)); // Convert string values to numbers
     const categorySimilarity = cosineSimilarity(userVector, clubVector);
-    
-  // shouldnt need this now becasue of above assumptions. we just have to edit the call to this function. 
-
-
-    // let identitySimilarity = 0;
-    // // Find the identity row matching this club (assuming first column is club name)
-    // const identityRow = identityData.find(r => r[0] === clubName);
-    // if (identityRow) {
-    //   let clubIdentityVector = [];
-    //   // The identity CSV is assumed to have identity scores in columns 1 to ALL_IDENTITIES.length
-    //   for (let j = 1; j <= ALL_IDENTITIES.length; j++) {
-    //     clubIdentityVector.push(parseFloat(identityRow[j]));
-    //   }
-    //   identitySimilarity = cosineSimilarity(userIdentityVector, clubIdentityVector);
-    // }
-    // // Combine category similarity with identity similarity (weighted by 2.0)
-    // const finalSimilarity = categorySimilarity + (2 * identitySimilarity);
     results.push({ clubName, clubLink, similarity: categorySimilarity });
   }
   results.sort((a, b) => b.similarity - a.similarity);
@@ -931,29 +981,74 @@ function App() {
   const [identityCompleted, setIdentityCompleted] = useState(false);
 
   // Identity responses for the user (to be weighted as 2.0 per matching tag)
-  const [userResponsesIdentity, setUserResponsesIdentity] = useState({});
+  const [userResponsesIdentity, setUserResponsesIdentity] = useState([]);
   const [selectedIdentityOption, setSelectedIdentityOption] = useState(null);
   const [showIdentityQuestions, setShowIdentityQuestions] = useState(false);
 
-  // Load club data CSV on mount.
+  //splits csv into club data and identity data
+  // // Load club data CSV on mount.
+  // useEffect(() => {
+  //   fetch('./csv_folder/tagsAndIdentity.csv')
+  //     .then(response => response.text())
+  //     .then(text => {
+  //       const parsed = Papa.parse(text);
+  //       console.log("CSV data loaded:", parsed);
+
+  //       const clubData = []
+  //       const identityData = []
+
+  //       parsed.data.forEach(row => {
+  //         clubData.push(row.slice(0,42));
+  //         identityData.push(row.slice(42));
+  //       });
+  //       setClubData(clubData);
+  //       setIdentityData(identityData);
+  //     });
+  // }, []);
+
+
+
+
+
+
+
   useEffect(() => {
     fetch('./csv_folder/tagsAndIdentity.csv')
       .then(response => response.text())
       .then(text => {
         const parsed = Papa.parse(text);
-        console.log("CSV data loaded:", parsed);
-
-        const clubData = []
-        const identityData = []
-
-        parsed.data.forEach(row => {
-          clubData.push(row.slice(0,42));
-          identityData.push(row.slice(42));
+        const rows = parsed.data; // rows as array of arrays
+        const header = rows[0];
+        // Create a mapping from column names to indices
+        const headerMapping = {};
+        header.forEach((colName, index) => {
+          headerMapping[colName] = index;
         });
-        setClubData(clubData);
-        setIdentityData(identityData);
+        // Optionally store headerMapping with the data if needed
+        setClubData({ headerMapping, rows });
       });
   }, []);
+
+
+
+  // // Load club data CSV on mount.
+  // useEffect(() => {
+  //   fetch('./csv_folder/tagsAndIdentity.csv')
+  //     .then(response => response.text())
+  //     .then(text => {
+  //       const parsed = Papa.parse(text);
+  //       console.log("CSV club data loaded:", parsed);
+  //       setClubData(parsed.data);
+  //     });
+  // }, []);
+
+
+
+
+
+
+
+
 
   // Only needed if we load in identiy and clubs separately
   // // Load identity data CSV on mount.
@@ -994,7 +1089,10 @@ function App() {
       setCurrentCategoryIndex(currentCategoryIndex + 1);
       setCurrentQuestionIndex(0);
     } else {
-      finalizeScoresAndComputeClubs();
+      //finalizeScoresAndComputeClubs();
+      //changing logic, do these to go to identity questions we will compute scores later
+      setCurrentQuestionIndex(0);
+      setSurveyComplete(true);
     }
   };
 
@@ -1019,15 +1117,21 @@ function App() {
   const handleIdentityNext = () => {
     const value = selectedIdentityOption ? selectedIdentityOption.value : null;
     console.log("Recording identity answer:", value);
-    setUserResponsesIdentity(prev => ({
-      ...prev,
-      [currentQuestionIndex]: value,
-    }));
+    setUserResponsesIdentity(prev => 
+      //(
+    //   {
+    //   ...prev,
+    //   [currentQuestionIndex]: value,
+    // }
+    [...prev, value]
+  //)
+  );
 
     const questionsForIdentity = IDENTITY_QUESTIONS["Identity"];
     if (currentQuestionIndex >= questionsForIdentity.length - 1) {
       console.log("All identity questions answered");
-      console.log(userResponsesIdentity);
+      //console.log(userResponsesIdentity);
+      finalizeScoresAndComputeClubs()
       setIdentityCompleted(true);
     } else {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
@@ -1039,6 +1143,7 @@ function App() {
       setShowIdentityQuestions(true);
       setCurrentQuestionIndex(0);
     } else {
+      finalizeScoresAndComputeClubs()
       setIdentityCompleted(true);
     }
   };
@@ -1070,7 +1175,10 @@ function App() {
     });
     console.log("User identity vector:", userIdentityVector);
 
-    const topTen = rankClubsBySimilarity(userVector, clubData, userIdentityVector, identityData);
+    //const topTen = rankClubsBySimilarity(userVector, clubData, userIdentityVector, identityData);
+    console.log("user identityy cols", userResponsesIdentity);
+    console.log("userVector", userVector);
+    const topTen = rankClubsBySimilarity(userVector, clubData, userResponsesIdentity);
     setTopClubs(topTen);
     setCurrentQuestionIndex(0);
     setSurveyComplete(true);
