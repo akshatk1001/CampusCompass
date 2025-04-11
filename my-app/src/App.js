@@ -897,6 +897,7 @@ const IDENTITY_OPTIONS = {
 ],
   "What religion do you identify the most with?": [
     { value: 'Christian', label: 'Christianity' },
+    { value: 'Jewish Community and Judaism', label: 'Jewish' },
     { value: 'Islam', label: 'Islam' },
     { value: 'Hindu', label: 'Hinduism' },
     { value: 'Buddhism', label: 'Buddhism' },
@@ -1051,7 +1052,7 @@ function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols) {
     userVector.push(1.0);
   }
 
-  if ("Greek" in userIdentityCols) {
+  if (userIdentityCols.includes("Greek")) {
     userVector[userVector.length - 1] = 0.5;
   }
   
@@ -1068,8 +1069,10 @@ function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols) {
     const clubVector = row.slice(2).map(val => parseFloat(val)); // Convert string values to numbers
 
     const categorySimilarity = cosineSimilarity(userVector, clubVector);
+
     results.push({ clubName, clubLink, similarity: categorySimilarity });
   }
+  
   results.sort((a, b) => b.similarity - a.similarity);
   return results.slice(0, 10);
 }
