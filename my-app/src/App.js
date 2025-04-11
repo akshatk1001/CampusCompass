@@ -705,8 +705,74 @@ const ALL_IDENTITIES = [
   "Hindu",
   "Buddhism",
   "Muslim",
-  "Sikh"
+  "Sikh",
+  "Aerospace Engineering",
+  "Agricultural Business",
+  "Agricultural Communication",
+  "Agricultural Science",
+  "Agricultural Systems Management",
+  "Animal Science",
+  "Anthropology and Geography",
+  "Architectural Engineering",
+  "Architecture",
+  "Art and Design",
+  "Biochemistry",
+  "Biological Sciences",
+  "Biomedical Engineering",
+  "BioResource and Agricultural Engineering",
+  "Business Administration",
+  "Chemistry",
+  "Child Development",
+  "City and Regional Planning",
+  "Civil Engineering",
+  "Communication Studies",
+  "Comparative Ethnic Studies",
+  "Computer Engineering",
+  "Computer Science",
+  "Construction Management",
+  "Dairy Science",
+  "Economics",
+  "Electrical Engineering",
+  "English",
+  "Environmental Earth and Soil Sciences",
+  "Environmental Engineering",
+  "Environmental Management and Protection",
+  "Food Science",
+  "Forest and Fire Sciences",
+  "General Engineering",
+  "Graphic Communication",
+  "History",
+  "Industrial Engineering",
+  "Industrial Technology and Packaging",
+  "Interdisciplinary Studies",
+  "Journalism",
+  "Kinesiology",
+  "Landscape Architecture",
+  "Liberal Arts and Engineering Studies",
+  "Liberal Studies",
+  "Manufacturing Engineering",
+  "Marine Sciences",
+  "Materials Engineering",
+  "Mathematics",
+  "Mechanical Engineering",
+  "Microbiology",
+  "Music",
+  "Nutrition",
+  "Philosophy",
+  "Physics",
+  "Plant Sciences",
+  "Political Science",
+  "Public Health",
+  "Psychology",
+  "Recreation, Parks, and Tourism Administration",
+  "Sociology",
+  "Software Engineering",
+  "Spanish",
+  "Statistics",
+  "Theatre Arts",
+  "Wine and Viticulture"
 ];
+
 
 // Custom styles to be applied to the Dropdown component.
 const customStyles = {
@@ -739,7 +805,9 @@ const IDENTITY_QUESTIONS = {
     ["What gender do you identify the most with?"],
     ["What race do you identify the most with?"],
     ["What is your major?"],
-    ["What religion do you identify the most with?"]
+    ["What religion do you identify the most with?"],
+    ["Are you interested in joining LGBTQ+ related communities?"],
+    ["Are you interested in Greek Life?"]
   ]
 };
 
@@ -747,7 +815,7 @@ const IDENTITY_OPTIONS = {
   "What gender do you identify the most with?": [
     { value: 'man men', label: 'Male' },
     { value: 'woman women', label: 'Female' },
-    { value: 'nonbinary', label: 'Non-binary' },
+    { value: 'other', label: 'Non-binary' },
     { value: 'other', label: 'Other/Decline To Say' }
   ],
   "What race do you identify the most with?": [
@@ -759,27 +827,92 @@ const IDENTITY_OPTIONS = {
     { value: 'Native Hawaiian or Other Pacific Islander', label: 'Native Hawaiian or Other Pacific Islander' },
     { value: 'other', label: 'Other/Decline To Say' }
   ],
-  "What is your major?": [
-    { value: 'engineering', label: 'Engineering' },
-    { value: 'business', label: 'Business' },
-    { value: 'arts', label: 'Arts' },
-    { value: 'science', label: 'Science' },
-    { value: 'other', label: 'Other/Decline To Say' }
-  ],
+ "What is your major?": [
+  { value: "Aerospace Engineering", label: "Aerospace Engineering" },
+  { value: "Agricultural Business", label: "Agricultural Business" },
+  { value: "Agricultural Communication", label: "Agricultural Communication" },
+  { value: "Agricultural Science", label: "Agricultural Science" },
+  { value: "Agricultural Systems Management", label: "Agricultural Systems Management" },
+  { value: "Animal Science", label: "Animal Science" },
+  { value: "Anthropology and Geography", label: "Anthropology and Geography" },
+  { value: "Architectural Engineering", label: "Architectural Engineering" },
+  { value: "Architecture", label: "Architecture" },
+  { value: "Art and Design", label: "Art and Design" },
+  { value: "Biochemistry", label: "Biochemistry" },
+  { value: "Biological Sciences", label: "Biological Sciences" },
+  { value: "Biomedical Engineering", label: "Biomedical Engineering" },
+  { value: "BioResource and Agricultural Engineering", label: "BioResource and Agricultural Engineering" },
+  { value: "Business Administration", label: "Business Administration" },
+  { value: "Chemistry", label: "Chemistry" },
+  { value: "Child Development", label: "Child Development" },
+  { value: "City and Regional Planning", label: "City and Regional Planning" },
+  { value: "Civil Engineering", label: "Civil Engineering" },
+  { value: "Communication Studies", label: "Communication Studies" },
+  { value: "Comparative Ethnic Studies", label: "Comparative Ethnic Studies" },
+  { value: "Computer Engineering", label: "Computer Engineering" },
+  { value: "Computer Science", label: "Computer Science" },
+  { value: "Construction Management", label: "Construction Management" },
+  { value: "Dairy Science", label: "Dairy Science" },
+  { value: "Economics", label: "Economics" },
+  { value: "Electrical Engineering", label: "Electrical Engineering" },
+  { value: "English", label: "English" },
+  { value: "Environmental Earth and Soil Sciences", label: "Environmental Earth and Soil Sciences" },
+  { value: "Environmental Engineering", label: "Environmental Engineering" },
+  { value: "Environmental Management and Protection", label: "Environmental Management and Protection" },
+  { value: "Food Science", label: "Food Science" },
+  { value: "Forest and Fire Sciences", label: "Forest and Fire Sciences" },
+  { value: "General Engineering", label: "General Engineering" },
+  { value: "Graphic Communication", label: "Graphic Communication" },
+  { value: "History", label: "History" },
+  { value: "Industrial Engineering", label: "Industrial Engineering" },
+  { value: "Industrial Technology and Packaging", label: "Industrial Technology and Packaging" },
+  { value: "Interdisciplinary Studies", label: "Interdisciplinary Studies" },
+  { value: "Journalism", label: "Journalism" },
+  { value: "Kinesiology", label: "Kinesiology" },
+  { value: "Landscape Architecture", label: "Landscape Architecture" },
+  { value: "Liberal Arts and Engineering Studies", label: "Liberal Arts and Engineering Studies" },
+  { value: "Liberal Studies", label: "Liberal Studies" },
+  { value: "Manufacturing Engineering", label: "Manufacturing Engineering" },
+  { value: "Marine Sciences", label: "Marine Sciences" },
+  { value: "Materials Engineering", label: "Materials Engineering" },
+  { value: "Mathematics", label: "Mathematics" },
+  { value: "Mechanical Engineering", label: "Mechanical Engineering" },
+  { value: "Microbiology", label: "Microbiology" },
+  { value: "Music", label: "Music" },
+  { value: "Nutrition", label: "Nutrition" },
+  { value: "Philosophy", label: "Philosophy" },
+  { value: "Physics", label: "Physics" },
+  { value: "Plant Sciences", label: "Plant Sciences" },
+  { value: "Political Science", label: "Political Science" },
+  { value: "Public Health", label: "Public Health" },
+  { value: "Psychology", label: "Psychology" },
+  { value: "Recreation, Parks, and Tourism Administration", label: "Recreation, Parks, and Tourism Administration" },
+  { value: "Sociology", label: "Sociology" },
+  { value: "Software Engineering", label: "Software Engineering" },
+  { value: "Spanish", label: "Spanish" },
+  { value: "Statistics", label: "Statistics" },
+  { value: "Theatre Arts", label: "Theatre Arts" },
+  { value: "Wine and Viticulture", label: "Wine and Viticulture" },
+  { value: "Other/Decline To Say", label: "Other/Decline To Say" }
+],
   "What religion do you identify the most with?": [
-    { value: 'Christianity', label: 'Christianity' },
+    { value: 'Christian', label: 'Christianity' },
     { value: 'Islam', label: 'Islam' },
-    { value: 'Hinduism', label: 'Hinduism' },
+    { value: 'Hindu', label: 'Hinduism' },
     { value: 'Buddhism', label: 'Buddhism' },
+    { value: 'other', label: 'Atheist' },
+    { value: 'other', label: 'Agnostic' },
     { value: 'other', label: 'Other/Decline To Say' }
   ],
   "Are you interested in joining LGBTQ+ related communities?": [
-    { value: 'yes', label: 'Yes' },
-    { value: 'no', label: 'No' }
+    { value: 'lgbtq', label: 'Yes' },
+    { value: 'other', label: 'Maybe' },
+    { value: 'other', label: 'No' }
   ],
   "Are you interested in Greek Life?": [
-    { value: 'yes', label: 'Yes' },
-    { value: 'no', label: 'No' }
+    { value: 'Greek', label: 'Yes' },
+    { value: 'other', label: 'Maybe' },
+    { value: 'other', label: 'No' }
   ]
 };
 
@@ -893,39 +1026,47 @@ function cosineSimilarity(vecA, vecB) { // This function takes two vectors and r
 }
 
 function keepColumnsAsArray(data, columnsToKeep, mapping) {
-  return data.map(row => columnsToKeep.map(col => row[mapping[col]]));
+  return data.map(row =>
+    columnsToKeep
+      .filter(col => col !== "other")
+      .map(col => row[mapping[col]])
+  );
 }
-
-// function filterClubColumns(clubData, columnsToKeep) {
-//   return clubData.map(row => {
-//     const filteredRow = {};
-//     columnsToKeep.forEach(col => {
-//       if (col in row) {
-//         filteredRow[col] = row[col];
-//         console.log(row[col]);
-//       }
-//     });
-//     return filteredRow;
-//   });
-// }
-
-
-
-
 
 function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols) {
   const { headerMapping, rows } = clubDataObj;
   const allCols = ["Club Name", "links", ...TAG_LIST, ...userIdentityCols];
+  console.log("col names:", allCols);
   const userFilteredData = keepColumnsAsArray(rows, allCols, headerMapping);
   console.log("Filtered Data: ", userFilteredData);
+  
+  console.log("identity", userIdentityCols);
 
+  let countIdentity = 0;
+  if (userIdentityCols.length > 0) {
+    countIdentity = userIdentityCols.filter(item => item !== null && item !== 'other').length;
+  }
+
+  for (let i = 0; i < countIdentity; i++) {
+    userVector.push(1.0);
+  }
+
+  if ("Greek" in userIdentityCols) {
+    userVector[userVector.length - 1] = 0.5;
+  }
+  
   let results = [];
   // Start at index 1 to skip header row if needed.
+
+  console.log("user vector: ", userVector);
+  console.log("userfiltered data: ", userFilteredData);
+
   for (let i = 1; i < userFilteredData.length; i++) {
     const row = userFilteredData[i];
     const clubName = row[0];
     const clubLink = row[1];
     const clubVector = row.slice(2).map(val => parseFloat(val)); // Convert string values to numbers
+
     const categorySimilarity = cosineSimilarity(userVector, clubVector);
     results.push({ clubName, clubLink, similarity: categorySimilarity });
   }
@@ -985,33 +1126,6 @@ function App() {
   const [selectedIdentityOption, setSelectedIdentityOption] = useState(null);
   const [showIdentityQuestions, setShowIdentityQuestions] = useState(false);
 
-  //splits csv into club data and identity data
-  // // Load club data CSV on mount.
-  // useEffect(() => {
-  //   fetch('./csv_folder/tagsAndIdentity.csv')
-  //     .then(response => response.text())
-  //     .then(text => {
-  //       const parsed = Papa.parse(text);
-  //       console.log("CSV data loaded:", parsed);
-
-  //       const clubData = []
-  //       const identityData = []
-
-  //       parsed.data.forEach(row => {
-  //         clubData.push(row.slice(0,42));
-  //         identityData.push(row.slice(42));
-  //       });
-  //       setClubData(clubData);
-  //       setIdentityData(identityData);
-  //     });
-  // }, []);
-
-
-
-
-
-
-
   useEffect(() => {
     fetch('./csv_folder/tagsAndIdentity.csv')
       .then(response => response.text())
@@ -1029,42 +1143,10 @@ function App() {
       });
   }, []);
 
-
-
-  // // Load club data CSV on mount.
-  // useEffect(() => {
-  //   fetch('./csv_folder/tagsAndIdentity.csv')
-  //     .then(response => response.text())
-  //     .then(text => {
-  //       const parsed = Papa.parse(text);
-  //       console.log("CSV club data loaded:", parsed);
-  //       setClubData(parsed.data);
-  //     });
-  // }, []);
-
-
-
-
-
-
-
-
-
-  // Only needed if we load in identiy and clubs separately
-  // // Load identity data CSV on mount.
-  // useEffect(() => {
-  //   fetch('./csv_folder/IdentityScored.csv')
-  //     .then(response => response.text())
-  //     .then(text => {
-  //       const parsed = Papa.parse(text);
-  //       console.log("CSV identity data loaded:", parsed);
-  //       setIdentityData(parsed.data);
-  //     });
-  // }, []);
-
   useEffect(() => {
     setSelectedIdentityOption(null);
   }, [currentQuestionIndex]);
+  
 
   const handleStartQuiz = () => {
     if (selectedCategories.length > 0) {
@@ -1073,6 +1155,7 @@ function App() {
     }
   };
 
+  
   const handleCategorySelection = (category) => {
     setSelectedCategories(prev => {
       if (prev.includes(category)) {
@@ -1114,29 +1197,59 @@ function App() {
     }
   };
 
-  const handleIdentityNext = () => {
-    const value = selectedIdentityOption ? selectedIdentityOption.value : null;
-    console.log("Recording identity answer:", value);
-    setUserResponsesIdentity(prev => 
-      //(
-    //   {
-    //   ...prev,
-    //   [currentQuestionIndex]: value,
-    // }
-    [...prev, value]
-  //)
-  );
 
-    const questionsForIdentity = IDENTITY_QUESTIONS["Identity"];
+
+
+
+  function handleIdentityNext() {
+    const value = selectedIdentityOption ? selectedIdentityOption.value : 'other';
+    // Instead of updating state and immediately finalizing,
+    // capture the new response in a local variable.
+    const updatedResponses = [...userResponsesIdentity, value];
+    console.log("Recording identity answer:", value);
+    
     if (currentQuestionIndex >= questionsForIdentity.length - 1) {
-      console.log("All identity questions answered");
-      //console.log(userResponsesIdentity);
-      finalizeScoresAndComputeClubs()
-      setIdentityCompleted(true);
+        console.log("All identity questions answered");
+        finalizeScoresAndComputeClubs(updatedResponses); // Pass updated responses directly
+        setIdentityCompleted(true);
     } else {
-      setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+        setUserResponsesIdentity(updatedResponses);
+        setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     }
-  };
+  }
+
+
+  // const handleIdentityNext = () => {
+  //   const value = selectedIdentityOption ? selectedIdentityOption.value : null;
+  //   console.log("Recording identity answer:", value);
+  //   setUserResponsesIdentity(prev => 
+  //     //(
+  //   //   {
+  //   //   ...prev,
+  //   //   [currentQuestionIndex]: value,
+  //   // }
+  //   [...prev, value]
+  // //)
+  // );
+
+  //   const questionsForIdentity = IDENTITY_QUESTIONS["Identity"];
+  //   if (currentQuestionIndex >= questionsForIdentity.length - 1) {
+  //     console.log("All identity questions answered");
+  //     //console.log(userResponsesIdentity);
+  //     finalizeScoresAndComputeClubs()
+  //     setIdentityCompleted(true);
+  //   } else {
+  //     setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+  //   }
+  // };
+
+
+
+
+
+
+
+
 
   const handleIdentityQuestions = (answeredYes) => {
     if (answeredYes) {
@@ -1149,21 +1262,29 @@ function App() {
   };
 
   // This function computes the final user vectors and ranks clubs based on both category and identity responses.
-  function finalizeScoresAndComputeClubs() {
+  
+  
+  
+  
+  
+  function finalizeScoresAndComputeClubs(identityResponses) {
+    // Log the identity responses passed as a parameter (this will now be complete)
+    console.log("user identity cols", identityResponses);
+  
     let tempUserTags = JSON.parse(JSON.stringify(userTags));
     tempUserTags = applyCategoryInterestScores(tempUserTags, selectedCategories);
     const finalScores = calcUserTagScores(tempUserTags);
     console.log("Final category scores:", finalScores);
-
+  
     // Build user category vector (40 tags)
     const userVector = [];
     for (let tagId = 1; tagId <= 40; tagId++) {
       userVector.push(finalScores[tagId] || 0);
     }
-
+  
     // Build user identity vector (each matching identity tag gets a score of 2.0)
     let userIdentityVector = new Array(ALL_IDENTITIES.length).fill(0);
-    Object.values(userResponsesIdentity).forEach(response => {
+    identityResponses.forEach(response => {
       let mappedResponse = response;
       if (response === "Christianity") mappedResponse = "Christian";
       if (response === "Hinduism") mappedResponse = "Hindu";
@@ -1173,16 +1294,51 @@ function App() {
         userIdentityVector[idx] = 2.0;
       }
     });
-    console.log("User identity vector:", userIdentityVector);
-
-    //const topTen = rankClubsBySimilarity(userVector, clubData, userIdentityVector, identityData);
-    console.log("user identityy cols", userResponsesIdentity);
+  
+    console.log("user identity vector", userIdentityVector);
     console.log("userVector", userVector);
-    const topTen = rankClubsBySimilarity(userVector, clubData, userResponsesIdentity);
+    const topTen = rankClubsBySimilarity(userVector, clubData, identityResponses);
     setTopClubs(topTen);
     setCurrentQuestionIndex(0);
     setSurveyComplete(true);
   }
+  
+  
+  
+  
+  // function finalizeScoresAndComputeClubs() {
+  //   let tempUserTags = JSON.parse(JSON.stringify(userTags));
+  //   tempUserTags = applyCategoryInterestScores(tempUserTags, selectedCategories);
+  //   const finalScores = calcUserTagScores(tempUserTags);
+  //   console.log("Final category scores:", finalScores);
+
+  //   // Build user category vector (40 tags)
+  //   const userVector = [];
+  //   for (let tagId = 1; tagId <= 40; tagId++) {
+  //     userVector.push(finalScores[tagId] || 0);
+  //   }
+
+  //   // Build user identity vector (each matching identity tag gets a score of 2.0)
+  //   let userIdentityVector = new Array(ALL_IDENTITIES.length).fill(0);
+  //   Object.values(userResponsesIdentity).forEach(response => {
+  //     let mappedResponse = response;
+  //     if (response === "Christianity") mappedResponse = "Christian";
+  //     if (response === "Hinduism") mappedResponse = "Hindu";
+  //     if (response === "Buddhism") mappedResponse = "Buddhism";
+  //     const idx = ALL_IDENTITIES.indexOf(mappedResponse);
+  //     if (idx !== -1) {
+  //       userIdentityVector[idx] = 2.0;
+  //     }
+  //   });
+
+  //   //const topTen = rankClubsBySimilarity(userVector, clubData, userIdentityVector, identityData);
+  //   console.log("user identity cols", userResponsesIdentity);
+  //   console.log("userVector", userVector);
+  //   const topTen = rankClubsBySimilarity(userVector, clubData, userResponsesIdentity);
+  //   setTopClubs(topTen);
+  //   setCurrentQuestionIndex(0);
+  //   setSurveyComplete(true);
+  // }
 
   const questionsForIdentity = IDENTITY_QUESTIONS["Identity"];
   const currentIdentityQuestion = questionsForIdentity[currentQuestionIndex];
