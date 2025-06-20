@@ -1,0 +1,49 @@
+/* Navigation component styles */
+.navigation {
+  width: 100%;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 0;
+  margin-bottom: 20px;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.nav-links a {
+  color: #1e4d2b;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-family: "Bebas Neue", serif;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: #c69214;
+  color: white;
+}
+
+.nav-links a.active {
+  background-color: #1e4d2b;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 15px;
+    padding: 0 10px;
+  }
+
+  .nav-links a {
+    font-size: 1rem;
+    padding: 8px 15px;
+  }
+}
