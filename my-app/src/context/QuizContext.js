@@ -1,11 +1,16 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import Papa from 'papaparse';
 import { ALL_TAGS } from '../data/tags';
+import '../types.js'
 
+
+// creating a context for the quiz, default value is nothing
 const QuizContext = createContext();
 
+// initializing variables
 const initialState = {
   clubData: [],
+  // userTags initializes a dictonary mapping every tagId (tag number) to an empty array
   userTags: Object.keys(ALL_TAGS).reduce((acc, tagId) => {
     acc[tagId] = [];
     return acc;
@@ -23,6 +28,12 @@ const initialState = {
   error: null
 };
 
+/**
+ * Handles logic for state updates
+ * @param {QuizState} state current state of quiz
+ * @param {QuizAction} action action object describing the update
+ * @returns {QuizState} returns new QuizState post update
+ */
 function quizReducer(state, action) {
   switch (action.type) {
     case 'SET_CLUB_DATA':
@@ -81,6 +92,19 @@ function quizReducer(state, action) {
   }
 }
 
+/**
+ * Provides the quiz with state and dispatch functions to all descendant components/
+ * 
+ * Initially fetches club data from our CSV containing information about the clubs and 
+ * populates the state or errors if fails to load
+ * @component
+ * 
+ * @param {object} props
+ * @param {React.ReactNode} props.children
+ *  - React elements that will have access to the quiz context.
+ * @returns {JSX.Element}
+ *  A context provider wrapping 'props.children'
+ */
 export function QuizProvider({ children }) {
   const [state, dispatch] = useReducer(quizReducer, initialState);
 
@@ -117,6 +141,11 @@ export function QuizProvider({ children }) {
   );
 }
 
+/**
+ * Checks if there is a Quiz Context and returns it
+ * @returns {QuizContextValue} 
+ * The quiz context object that contains current state and dispatch 
+ */
 export function useQuiz() {
   const context = useContext(QuizContext);
   if (!context) {
