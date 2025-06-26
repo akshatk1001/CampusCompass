@@ -1,6 +1,17 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+
+/**
+ * Navigational component used to toggel bewteen tabs on the homepage 
+ * Current tabs are ('Take Quiz' and 'Browse Categories')
+ * When taking quiz, this component is hidden
+ * @component
+ * 
+ * @returns {JSX.Element | null}
+ *  - Returns navigation bar when not in quiz state, else returns null
+ * 
+ */
 function Navigation() {
   const location = useLocation();
   
