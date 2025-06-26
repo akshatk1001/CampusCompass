@@ -2,37 +2,37 @@ import React from 'react';
 import Select from 'react-select';
 
 /**
- * A simple wrapper around 'react-select' that allows for customization
- * and standardization accross various pages.  
+ * Dropdown Component
  * @component
  * 
- * @param {object} props
+ * A simple wrapper around 'react-select' providing a reusable dropdown component that provides a consistent, searchable dropdown interface.
  * 
- * @param {{label: string, value: any }[]}} props.options
- *  - options for selection in the dropdown in the form {label, value}
- * e.g. [{label: 'Male', value: 'man men'}, {label: 'Female', value: 'woman women'}, {label: 'Non-binary', value: 'other'}]
- * @param {(option: {label: string, value: any}) => void} props.onChange
- *  - Action taken after an option is selected
- * @param {{label: string, value: any}} props.value
- *  - Current option (from props.options) selected
- * @param {string} props.placeholder
- *  - Dropdown text placeholder for if no option is currently selected (e.g "Select An Option")
- * @param {*} props.styles (NOTE: not sure what style type is so left as *)
- *  - Optional custom styling of dropdown component (e.g. colors, size, hoverability)
+ * This component is primarily used in:
+ * - Identity questions (major selection, religion, etc.)
+ * - Any form where users need to select from a large list of options
+ * 
+ * @param {{ value: any, label: string }[]} options - Array of option objects with 'value' and 'label' properties
+ *                         Example: [{ value: 'computer-science', label: 'Computer Science' }]
+ * @param {(option: { value: any, label: string }) => void} onChange - Callback function triggered when user selects an option
+ *                             Receives the selected option object as parameter
+ * @param {{ value: any, label: string }} value - Currently selected option object (for controlled component)
+ * @param {String} placeholder - Text to display when no option is selected
+ * @param {Object} styles - Custom styling object to override default react-select styles
  * 
  * @return {JSX.Element}
  *  - A searchable dropdown component rendered using 'react-select'.
- * 
  */
+
+
 const Dropdown = ({ options, onChange, value, placeholder, styles }) => {
   return (
     <Select
-      options={options}
-      onChange={onChange}
-      value={value}
-      placeholder={placeholder}
-      styles={styles}
-      isSearchable
+      options={options}               // List of selectable options
+      onChange={onChange}             // Handler for when selection changes
+      value={value}                   // Currently selected value (controlled component)
+      placeholder={placeholder}       // Text shown when nothing is selected
+      styles={styles}                 // Custom CSS-in-JS styles for the dropdown
+      isSearchable                    // Enables typing to filter options
     />
   );
 };

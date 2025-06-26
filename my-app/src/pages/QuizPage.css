@@ -1,0 +1,126 @@
+/* QuizPage component styles */
+.progress-bar {
+  width: 100%;
+  max-width: 600px;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c69214, #1e4d2b);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.question-block {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 700px;
+  text-align: center;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.category-name {
+  font-size: 1.4rem;
+  color: #555;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.question-counter {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+.subcategory-question {
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.answer-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.answer-button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Bebas Neue", serif;
+  min-width: 120px;
+}
+
+.yes-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.yes-button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.no-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.no-button:hover {
+  background-color: #da190b;
+  transform: translateY(-2px);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .answer-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .answer-button {
+    width: 200px;
+  }
+
+  .category-name {
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+  }
+
+  .subcategory-question {
+    font-size: 2rem;
+    margin: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-name {
+    font-size: 1.1rem;
+    margin-top: 30px;
+  }
+
+  .subcategory-question {
+    font-size: 2rem;
+    margin: 20px;
+  }
+}
