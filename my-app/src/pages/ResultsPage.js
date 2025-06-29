@@ -3,6 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useQuiz } from '../context/QuizContext';
 
+/**
+ * ResultsPage component.
+ *
+ * Makes sure results are ready and returns the top 10 club matches along with
+ * corresponding information for each club (links, name, match percentage, etc)
+ * 
+ * Users have the option to retake quiz and to view all clubs.
+ *
+ * @component
+ * 
+ * @returns {JSX.Element} results UI or null
+ */
 function ResultsPage() {
   const { state, dispatch } = useQuiz();
   const navigate = useNavigate();
