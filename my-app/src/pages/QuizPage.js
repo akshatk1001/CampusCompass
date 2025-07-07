@@ -118,6 +118,8 @@ function QuizPage() {
       // [...existingArray, newItem] adds newItem to the end of the array
       updatedTags[tid] = [...updatedTags[tid], numericAnswer];
     });
+   // console.log(updatedTags)
+    //console.log(updatedTags[1])
 
     // STEP 4: Save the updated tags to our global quiz state
     dispatch({ type: 'UPDATE_USER_TAGS', payload: updatedTags });
@@ -143,6 +145,53 @@ function QuizPage() {
       // This increments currentQuestionIndex by 1
       dispatch({ type: 'NEXT_QUESTION' });
     }
+  };
+
+  // Back button
+  const handleBack = (tagIds) => {
+    console.log(tagIds)
+    if (state.currentQuestionIndex === 0) {
+      //implement later
+      console.log("implement later????");
+    }
+
+    else {
+          
+      // STEP 1: Make a copy of existing user tags so we don't accidentally change the original
+      // {...state.userTags} creates a "shallow copy" - like photocopying the data
+      // then pop the last elment from the copy
+      const updatedTags = { ...state.userTags };
+
+      tagIds.forEach(tid => {
+        // For each tag, delete most recent response
+        updatedTags[tid] = updatedTags[tid].slice(0, -1);
+      });
+      // STEP 2: Save the updated tags to our global quiz state
+      dispatch({ type: 'UPDATE_USER_TAGS', payload: updatedTags });
+
+      // STEP 3: Figure out where to go next in the quiz
+      // This is like a decision tree based on where we are in the quiz
+      
+      // Check if this was the last question in the current category
+      if (state.currentQuestionIndex === 0) {
+        // We finished this category! But are there more categories?
+        console.log("Currently 0")
+        if (state.currentCategoryIndex === 0) {
+          //case if we are on first category first question
+          // idk what we do here? nothing? go back to home?
+          console.log("implement later: ")
+        } else {
+          //case if we are on first question but not first category
+          // should go back 1 category and to last question of that category
+          console.log("implement later: ")
+        }
+      } else {
+        // Not first question, can just go back 1 question in category
+        console.log("reached")
+        dispatch({ type: 'PREV_QUESTION' });
+      }
+    }
+
   };
 
   // PROGRESS CALCULATION: Figure out how far through the quiz they are
@@ -219,6 +268,15 @@ function QuizPage() {
           >
             No
           </button>
+          {state.currentQuestionIndex > 0 && (
+            <button 
+              className='back-button'
+              onClick={ () => handleBack(questionsForCategory[state.currentQuestionIndex - 1][1])}
+              >
+              Back
+            </button>
+          )}
+          
         </div>
       </div>
     </Layout>

@@ -87,6 +87,8 @@ function quizReducer(state, action) {
     
     // COMMAND: "User answered a question - update their tag preferences"
     case 'UPDATE_USER_TAGS':
+      console.log("CUR:", state.userTags)
+      console.log("NEW:", action.payload)
       return { 
         ...state, 
         userTags: {
@@ -100,6 +102,13 @@ function quizReducer(state, action) {
       return {
         ...state,
         currentQuestionIndex: state.currentQuestionIndex + 1 // Add 1 to question number
+      };
+    
+    // COMMAND: "Move to previous question in current category"
+    case 'PREV_QUESTION':
+      return {
+        ...state,
+        currentQuestionIndex: state.currentQuestionIndex - 1 // sub 1 to question number
       };
     
     // COMMAND: "Move to next category and start from first question"
