@@ -91,7 +91,6 @@ function QuizPage() {
    * Why we use numbers instead of Yes/No:
    * - Later we'll average these numbers to get preference scores
    * - 1 means "I like this", 0 means "I don't like this"
-   * - Numbers are easier for computers to calculate with
    * 
    * What are "tags"?
    * - Tags represent different interests/activities (like "teamwork", "outdoors", "leadership")
