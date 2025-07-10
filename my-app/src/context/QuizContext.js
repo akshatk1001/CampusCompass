@@ -12,12 +12,12 @@ const QuizContext = createContext();
 const initialState = {
   clubData: [], // Will store club information loaded from CSV file
   
-  // Create empty arrays for each tag category (academic, social, creative, etc.)
-  // Object.keys(ALL_TAGS) gets tag names like ["academic", "social", "creative"]
-  // .reduce() converts this array into an object like: { "academic": [], "social": [], "creative": [] }
-  // Each empty array will later store the user's quiz answers for that category
+  // Create empty arrays for each numbered tag (1, 2, 3, etc.)
+  // Object.keys(ALL_TAGS) gets numbered keys like ["1", "2", "3", ...]
+  // .reduce() converts this array into an object like: { "1": [], "2": [], "3": [] }
+  // Each empty array will later store the user's quiz answers for that specific tag ID
   userTags: Object.keys(ALL_TAGS).reduce((acc, tagId) => {
-    acc[tagId] = []; // Create empty array for this category
+    acc[tagId] = []; // Create empty array for this tag ID
     return acc; // Return the building object
   }, {}), // Start with empty object {}
   
