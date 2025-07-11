@@ -194,18 +194,19 @@ export function keepColumnsAsArray(data, columnsToKeep, mapping) {
     });
   
   // STEP 2: Process each row of the spreadsheet using only valid columns
-  return data.map(row =>
+  return data.map((row, rowIndex) =>
     validColumns.map(col => {
       const columnIndex = mapping[col]; // the column index in the CSV
       const value = row[columnIndex]; 
       
-      // Additional safety check - ensure we got a valid value
-      if (value === undefined) {
-        console.warn(`Undefined value found for column "${col}" at index ${columnIndex}`);
-        return 0; // Default to 0 for missing values
+      // Convert to number if it's a string representation of a number
+      if (typeof value === 'string') {
+        const numericValue = parseFloat(value);
+        return isNaN(numericValue) ? value : numericValue;
       }
       
-      return value;
+      // Return the value as-is, or 0 if somehow undefined (should not happen with complete data)
+      return value !== undefined ? value : 0;
     })
   );
   
@@ -243,22 +244,21 @@ export function keepColumnsAsArray(data, columnsToKeep, mapping) {
  * @returns {Array} - Top 10 club matches with similarity scores
  */
 export function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols) {
-  // STEP 1: Set up our data processing
+  // STEP 1: Process identity responses  
+  // Get the filtered valid identity responses (excluding null and 'other')
+  // We ignore null and 'other' responses since they don't provide filtering value
+  const validIdentityResponses = userIdentityCols.filter(item => item !== null && item !== 'other');
+
   
+  // STEP 2: Set up our data processing
   const { headerMapping, rows } = clubDataObj;
-  
   // Define which columns we need from the club data
-  // "Club Name" and "links" for display, TAG_LIST for interests, userIdentityCols for filtering
-  const allCols = ["Club Name", "links", ...TAG_LIST, ...userIdentityCols];
+  // "Club Name" and "links" for display, TAG_LIST for interests, validIdentityResponses for filtering
+  const allCols = ["Club Name", "links", ...TAG_LIST, ...validIdentityResponses];
   
   // Filter the club data to only include the columns we need
   const userFilteredData = keepColumnsAsArray(rows, allCols, headerMapping);
   
-  // STEP 2: Process identity responses
-  
-  // Get the filtered valid identity responses (excluding null and 'other')
-  // We ignore null and 'other' responses since they don't provide filtering value
-  const validIdentityResponses = userIdentityCols.filter(item => item !== null && item !== 'other');
 
   // STEP 3: Enhance the user vector with identity scores
   
@@ -313,7 +313,11 @@ export function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols)
     // Convert strings to numbers for mathematical comparison
     const clubVector = row.slice(2).map(val => {
       const num = parseFloat(val);
-      return isNaN(num) ? 0 : num; // Default to 0 for invalid numbers
+      if (isNaN(num)) {
+        console.warn(`Invalid number found in club vector for "${clubName}" at index ${i}: ${val}`);
+        return 0;
+      }
+      return num; // Default to 0 for invalid numbers
     });
     
     // Ensure vectors have the same length

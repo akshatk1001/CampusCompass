@@ -10,7 +10,7 @@ import ResultsPage from './pages/ResultsPage';
 import CategoriesPage from './pages/CategoriesPage';
 import CategoryPage from './pages/CategoryPage';
 
-import './App.css';
+import './styles/global.css';
 
 function App() {
   return (

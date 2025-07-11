@@ -186,9 +186,25 @@ export function QuizProvider({ children }) {
       .then(response => response.text()) // Convert downloaded file to text
       .then(text => {
         // Parse CSV text into JavaScript arrays using Papa Parse library
-        // Converts "Club,Tags\nChess Club,academic" into [["Club","Tags"], ["Chess Club","academic"]]
-        const parsed = Papa.parse(text);
-        const rows = parsed.data; // Get the array of arrays
+        // Since you confirmed all data is complete, use strict parsing settings
+        const parsed = Papa.parse(text, {
+          skipEmptyLines: true, // Skip completely empty lines
+          header: false, // We handle the header manually
+          dynamicTyping: false, // Keep everything as strings to avoid parsing issues
+          fastMode: false, // Use slower but more reliable parsing
+          delimiter: ',', // Explicitly set comma as delimiter
+          quoteChar: '"', // Handle quoted fields properly
+          escapeChar: '"', // Handle escaped quotes
+          transformHeader: undefined, // Don't transform headers
+          transform: undefined // Don't transform values during parsing
+        });
+        
+        const rows = parsed.data;
+        
+        if (rows.length === 0) {
+          throw new Error('CSV file is empty');
+        }
+        
         const header = rows[0]; // First row contains column names
         
         // Create a lookup table so we can find columns by name instead of number
