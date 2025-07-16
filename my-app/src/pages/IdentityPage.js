@@ -109,8 +109,8 @@ function IdentityPage() {
    *    - If not last: move to next question and reset the dropdown
    */
   const handleNext = () => {
-    // Get selected value or default to 'other' if none selected
-    const value = selectedOption ? selectedOption.value : 'other';
+    // Get selected value 
+    const value = selectedOption.value
     
     // Check if this was the last identity question
     if (state.currentQuestionIndex >= questionsForIdentity.length - 1) {
