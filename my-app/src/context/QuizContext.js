@@ -87,8 +87,6 @@ function quizReducer(state, action) {
     
     // COMMAND: "User answered a question - update their tag preferences"
     case 'UPDATE_USER_TAGS':
-      console.log("CUR:", state.userTags)
-      console.log("NEW:", action.payload)
       return { 
         ...state, 
         userTags: {
