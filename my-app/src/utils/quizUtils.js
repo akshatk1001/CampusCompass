@@ -3,7 +3,7 @@
 import { TAG_LIST } from '../data/tags';
 // CATEGORY_QUESTIONS contains all the quiz questions organized by category
 import { CATEGORY_QUESTIONS } from '../data/questions';
-import { IDENTITY_QUESTIONS, ONLY_IDENTITIES } from '../data/identity';
+import { ONLY_IDENTITIES } from '../data/identity';
 
 /**
  * calcUserTagScores - THE SCORE CALCULATOR
