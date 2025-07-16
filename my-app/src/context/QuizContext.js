@@ -135,10 +135,7 @@ function quizReducer(state, action) {
     case 'ADD_IDENTITY_RESPONSE':
       return {
         ...state,
-        userIdentityResponses: [
-          ...state.userIdentityResponses, // Keep existing answers...
-          action.payload // ...and add new answer to end
-        ]
+        userIdentityResponses: state.userIdentityResponses.concat(action.payload) // Add new response to existing list
       };
     
     // COMMAND: "User finished all identity questions"
