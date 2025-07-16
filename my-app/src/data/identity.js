@@ -119,3 +119,35 @@ export const IDENTITY_OPTIONS = {
     { value: 'other', label: 'No' }
   ]
 };
+
+export const ONLY_IDENTITIES = [
+  /* Lengths of each identity category (for debugging purposes):
+  * 2
+  * 6
+  * 65
+  * 5
+  * 1
+  * 1
+  */
+  ["man men", "woman women"],
+  ["White European Italian", "Black African American", "Native American", "Asian", "Hispanic", "Native Hawaiian or Other Pacific Islander"],
+  ["Aerospace Engineering", "Agricultural Business", "Agricultural Communication", "Agricultural Science", "Agricultural Systems Management",
+    "Animal Science", "Anthropology and Geography", "Architectural Engineering", "Architecture", "Art and Design", "Biochemistry", "Biological Sciences", 
+    "Biomedical Engineering", "BioResource and Agricultural Engineering", "Business Administration", "Chemistry",
+    "Child Development", "City and Regional Planning", "Civil Engineering", 
+    "Communication Studies", "Comparative Ethnic Studies", "Computer Engineering", 
+    "Computer Science", "Construction Management", "Dairy Science", "Economics",  
+    "Electrical Engineering", "English", "Environmental Earth and Soil Sciences", 
+    "Environmental Engineering", "Environmental Management and Protection", "Food Science", 
+    "Forest and Fire Sciences", "General Engineering", "Graphic Communication", "History", 
+    "Industrial Engineering", "Industrial Technology and Packaging", "Interdisciplinary Studies", 
+    "Journalism", "Kinesiology", "Landscape Architecture", "Liberal Arts and Engineering Studies",
+    "Liberal Studies", "Manufacturing Engineering", "Marine Sciences", "Materials Engineering", 
+    "Mathematics", "Mechanical Engineering", "Microbiology", "Music", "Nutrition", "Philosophy", 
+    "Physics", "Plant Sciences", "Political Science", "Public Health", "Psychology", 
+    "Recreation, Parks, and Tourism Administration", "Sociology", "Software Engineering", "Spanish", 
+    "Statistics", "Theatre Arts", "Wine and Viticulture"],
+  ["Christian", "Jewish Community and Judaism", "Islam", "Hindu", "Buddhism"],
+  ["lgbtq"],
+  ["Greek"]
+]

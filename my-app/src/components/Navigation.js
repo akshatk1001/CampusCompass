@@ -20,13 +20,7 @@ import './Navigation.css';
  * - "/categories" - Browse Categories (explore categories before taking quiz)
  * 
  * Used by: Layout component (appears on most pages except quiz flow)
- * 
- * @component
- * 
- * @returns {JSX.Element | null}
- *  - Returns navigation bar when not in quiz state, else returns null
  */
-
 function Navigation() {
   const location = useLocation(); // Get the current location from React Router
   

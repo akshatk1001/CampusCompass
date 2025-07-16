@@ -12,12 +12,12 @@ const QuizContext = createContext();
 const initialState = {
   clubData: [], // Will store club information loaded from CSV file
   
-  // Create empty arrays for each tag category (academic, social, creative, etc.)
-  // Object.keys(ALL_TAGS) gets tag names like ["academic", "social", "creative"]
-  // .reduce() converts this array into an object like: { "academic": [], "social": [], "creative": [] }
-  // Each empty array will later store the user's quiz answers for that category
+  // Create empty arrays for each numbered tag (1, 2, 3, etc.)
+  // Object.keys(ALL_TAGS) gets numbered keys like ["1", "2", "3", ...]
+  // .reduce() converts this array into an object like: { "1": [], "2": [], "3": [] }
+  // Each empty array will later store the user's quiz answers for that specific tag ID
   userTags: Object.keys(ALL_TAGS).reduce((acc, tagId) => {
-    acc[tagId] = []; // Create empty array for this category
+    acc[tagId] = []; // Create empty array for this tag ID
     return acc; // Return the building object
   }, {}), // Start with empty object {}
   
@@ -87,8 +87,6 @@ function quizReducer(state, action) {
     
     // COMMAND: "User answered a question - update their tag preferences"
     case 'UPDATE_USER_TAGS':
-      console.log("CUR:", state.userTags)
-      console.log("NEW:", action.payload)
       return { 
         ...state, 
         userTags: {
@@ -135,10 +133,7 @@ function quizReducer(state, action) {
     case 'ADD_IDENTITY_RESPONSE':
       return {
         ...state,
-        userIdentityResponses: [
-          ...state.userIdentityResponses, // Keep existing answers...
-          action.payload // ...and add new answer to end
-        ]
+        userIdentityResponses: state.userIdentityResponses.concat(action.payload) // Add new response to existing list
       };
     
     // COMMAND: "User finished all identity questions"
@@ -186,9 +181,25 @@ export function QuizProvider({ children }) {
       .then(response => response.text()) // Convert downloaded file to text
       .then(text => {
         // Parse CSV text into JavaScript arrays using Papa Parse library
-        // Converts "Club,Tags\nChess Club,academic" into [["Club","Tags"], ["Chess Club","academic"]]
-        const parsed = Papa.parse(text);
-        const rows = parsed.data; // Get the array of arrays
+        // Since you confirmed all data is complete, use strict parsing settings
+        const parsed = Papa.parse(text, {
+          skipEmptyLines: true, // Skip completely empty lines
+          header: false, // We handle the header manually
+          dynamicTyping: false, // Keep everything as strings to avoid parsing issues
+          fastMode: false, // Use slower but more reliable parsing
+          delimiter: ',', // Explicitly set comma as delimiter
+          quoteChar: '"', // Handle quoted fields properly
+          escapeChar: '"', // Handle escaped quotes
+          transformHeader: undefined, // Don't transform headers
+          transform: undefined // Don't transform values during parsing
+        });
+        
+        const rows = parsed.data;
+        
+        if (rows.length === 0) {
+          throw new Error('CSV file is empty');
+        }
+        
         const header = rows[0]; // First row contains column names
         
         // Create a lookup table so we can find columns by name instead of number

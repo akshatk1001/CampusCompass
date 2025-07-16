@@ -91,7 +91,6 @@ function QuizPage() {
    * Why we use numbers instead of Yes/No:
    * - Later we'll average these numbers to get preference scores
    * - 1 means "I like this", 0 means "I don't like this"
-   * - Numbers are easier for computers to calculate with
    * 
    * What are "tags"?
    * - Tags represent different interests/activities (like "teamwork", "outdoors", "leadership")
@@ -118,8 +117,6 @@ function QuizPage() {
       // [...existingArray, newItem] adds newItem to the end of the array
       updatedTags[tid] = [...updatedTags[tid], numericAnswer];
     });
-   // console.log(updatedTags)
-    //console.log(updatedTags[1])
 
     // STEP 4: Save the updated tags to our global quiz state
     dispatch({ type: 'UPDATE_USER_TAGS', payload: updatedTags });
@@ -150,46 +147,28 @@ function QuizPage() {
   // Back button
   const handleBack = (tagIds) => {
     console.log(tagIds)
-    if (state.currentQuestionIndex === 0) {
-      //implement later
-      console.log("implement later????");
-    }
 
-    else {
-          
-      // STEP 1: Make a copy of existing user tags so we don't accidentally change the original
-      // {...state.userTags} creates a "shallow copy" - like photocopying the data
-      // then pop the last elment from the copy
-      const updatedTags = { ...state.userTags };
+    // STEP 1: Make a copy of existing user tags so we don't accidentally change the original
+    // {...state.userTags} creates a "shallow copy" - like photocopying the data
+    // then pop the last elment from the copy
+    const updatedTags = { ...state.userTags };
 
-      tagIds.forEach(tid => {
-        // For each tag, delete most recent response
-        updatedTags[tid] = updatedTags[tid].slice(0, -1);
-      });
-      // STEP 2: Save the updated tags to our global quiz state
-      dispatch({ type: 'UPDATE_USER_TAGS', payload: updatedTags });
+    tagIds.forEach(tid => {
+      // For each tag from the previous question, delete most recent response
+      updatedTags[tid] = updatedTags[tid].slice(0, -1);
+    });
+    // STEP 2: Save the updated tags to our global quiz state
+    console.log("CUR:", state.userTags)
+    console.log("NEW:", updatedTags)
+    dispatch({ type: 'UPDATE_USER_TAGS', payload: updatedTags });
 
-      // STEP 3: Figure out where to go next in the quiz
-      // This is like a decision tree based on where we are in the quiz
-      
-      // Check if this was the last question in the current category
-      if (state.currentQuestionIndex === 0) {
-        // We finished this category! But are there more categories?
-        console.log("Currently 0")
-        if (state.currentCategoryIndex === 0) {
-          //case if we are on first category first question
-          // idk what we do here? nothing? go back to home?
-          console.log("implement later: ")
-        } else {
-          //case if we are on first question but not first category
-          // should go back 1 category and to last question of that category
-          console.log("implement later: ")
-        }
-      } else {
-        // Not first question, can just go back 1 question in category
-        console.log("reached")
-        dispatch({ type: 'PREV_QUESTION' });
-      }
+    // STEP 3: Figure out where to go next in the quiz
+    // This is like a decision tree based on where we are in the quiz
+    
+    // If the current question is the first question in the category, we can't go back - IMPLEMENT LATER POTENTIALLY
+    if (state.currentQuestionIndex !== 0) {
+      // Not first question, can just go back 1 question in category
+      dispatch({ type: 'PREV_QUESTION' });
     }
 
   };

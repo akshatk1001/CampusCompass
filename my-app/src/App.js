@@ -10,12 +10,17 @@ import ResultsPage from './pages/ResultsPage';
 import CategoriesPage from './pages/CategoriesPage';
 import CategoryPage from './pages/CategoryPage';
 
-import './App.css';
+import './styles/global.css';
 
 function App() {
   return (
     <QuizProvider>
-      <Router>
+      <Router
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true
+        }}
+      >
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/quiz" element={<QuizPage />} />
