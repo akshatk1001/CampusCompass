@@ -3,6 +3,7 @@
 import { TAG_LIST } from '../data/tags';
 // CATEGORY_QUESTIONS contains all the quiz questions organized by category
 import { CATEGORY_QUESTIONS } from '../data/questions';
+import { IDENTITY_QUESTIONS, ONLY_IDENTITIES } from '../data/identity';
 
 /**
  * calcUserTagScores - THE SCORE CALCULATOR
@@ -146,6 +147,33 @@ export function cosineSimilarity(vecA, vecB) {
 }
 
 /**
+ * getRelevantIdentities - THE IDENTITY FILTER
+ * ==========================
+ * This function filters out the user's identity responses to find relevant identities.
+ * It removes any 'other' or null responses and returns a list of identities that can be used for
+ * matchmaking.
+ * It also expands the identities to include all relevant traits from the ONLY_IDENTITIES array.
+ * @param {Array} selectedIdentities - Array of user's identity responses (e.g., ["man men", "Theatre Arts", "other"])
+ * @returns {Array} - Array of all other ident
+ */
+
+export function getRelevantIdentities(selectedIdentities) {
+  // Filter out any 'other' or null responses
+  const startList = selectedIdentities.filter(identity => identity !== 'other' && identity !== null);
+  
+  // get all other valid identities in that same question
+  const relevantIdentities = startList.flatMap(identity => {
+    // find the subwarray in ONLY_IDENTITIES that contains this identity
+    const group = ONLY_IDENTITIES.find(arr => arr.includes(identity));
+    // if found, return all identities in that group; otherwise, just the identity itself
+    return group ? group : [identity];
+  });
+
+  return relevantIdentities;
+
+}
+
+/**
  * keepColumnsAsArray - THE DATA FILTER
  * ====================================
  * 
@@ -180,6 +208,7 @@ export function keepColumnsAsArray(data, columnsToKeep, mapping) {
     .filter(col => {
       // ignore column if it is 'other'
       if (col === 'other') {
+        console.log(`Skipping 'other' column as it is not needed.`);
         return false; // Skip this column
       }
       // Check if this column exists in our CSV
@@ -247,14 +276,13 @@ export function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols)
   // STEP 1: Process identity responses  
   // Get the filtered valid identity responses (excluding null and 'other')
   // We ignore null and 'other' responses since they don't provide filtering value
-  const validIdentityResponses = userIdentityCols.filter(item => item !== null && item !== 'other');
+  const identitiesToInclude = getRelevantIdentities(userIdentityCols);
 
-  
   // STEP 2: Set up our data processing
   const { headerMapping, rows } = clubDataObj;
   // Define which columns we need from the club data
-  // "Club Name" and "links" for display, TAG_LIST for interests, validIdentityResponses for filtering
-  const allCols = ["Club Name", "links", ...TAG_LIST, ...validIdentityResponses];
+  // "Club Name" and "links" for display, TAG_LIST for interests, identitiesToInclude for filtering
+  const allCols = ["Club Name", "links", ...TAG_LIST, ...identitiesToInclude];
   
   // Filter the club data to only include the columns we need
   const userFilteredData = keepColumnsAsArray(rows, allCols, headerMapping);
@@ -262,17 +290,21 @@ export function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols)
 
   // STEP 3: Enhance the user vector with identity scores
   
-  // Add a high score (2.0) for each identity characteristic
+  // Add a high score (2.0) for each identity characteristic the user selected, and 0 for the ones they didn't
   // This boosts similarity for clubs that match the user's identity
-  for (let i = 0; i < validIdentityResponses.length; i++) {
-    userVector.push(2.0);
+  for (let i = 0; i < identitiesToInclude.length; i++) {
+    if (userIdentityCols.includes(identitiesToInclude[i])) {
+      userVector.push(2.0);
+    } else {
+      userVector.push(0);
+    }
   }
 
   // Special case: Greek life gets a lower boost (1.0 instead of 2.0)
   // This is because we noticed when this is set to 2.0, results are heavily skewed
   if (userIdentityCols.includes("Greek")) {
     // Find the correct index of "Greek" in the valid responses
-    const greekIndex = validIdentityResponses.indexOf("Greek");
+    const greekIndex = identitiesToInclude.indexOf("Greek");
     if (greekIndex !== -1) {
       // Greek is at TAG_LIST.length + greekIndex in the userVector
       const greekVectorIndex = TAG_LIST.length + greekIndex;
