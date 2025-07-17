@@ -31,7 +31,7 @@ export const IDENTITY_OPTIONS = {
     { value: 'other', label: 'Other/Decline To Say' }
   ],
   "What is your major?": [
-    { value: "Other/Decline To Say", label: "Other/Decline To Say" },
+    { value: "other", label: "Other/Decline To Say" },
     { value: "Aerospace Engineering", label: "Aerospace Engineering" },
     { value: "Agricultural Business", label: "Agricultural Business" },
     { value: "Agricultural Communication", label: "Agricultural Communication" },

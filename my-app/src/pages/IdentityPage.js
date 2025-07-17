@@ -15,6 +15,8 @@ import { IDENTITY_QUESTIONS, IDENTITY_OPTIONS } from '../data/identity';
 import { calcUserTagScores, applyCategoryInterestScores, rankClubsBySimilarity } from '../utils/quizUtils';
 // Import the CSS styles for this specific page
 import './IdentityPage.css';
+// Import the tag data which contains all the tags used in the app
+import { ALL_TAGS } from '../data/tags';
 
 /**
  * IdentityPage Component
@@ -164,8 +166,8 @@ function IdentityPage() {
     // Each number represents how much they like that type of activity (0-1 scale)
     const userVector = [];
     // NOTE: Tag IDs start at 1, not 0 (this matches our data structure in ALL_TAGS)
-    // We loop from 1 to 40 because that's how the tags are numbered in our system
-    for (let tagId = 1; tagId <= 40; tagId++) {
+    // We loop from 1 to length of ALL_TAGS because that's how the tags are numbered in our system
+    for (let tagId = 1; tagId <= Object.keys(ALL_TAGS).length; tagId++) {
       // JavaScript automatically converts the integer 1 to the string "1" for object property access (automatic type coercion)
       userVector.push(finalScores[tagId]); // Use their score, or 0 if they never answered about this topic
     }
