@@ -49,39 +49,37 @@ The application will open at `http://localhost:3000`
 
 ### Step 1: Generate Club Data CSV
 
-**File**: `../TaggingClubIdentity.py` (located in parent directory)
+**File**: `../AllTagging.py` (located in parent directory)
 
 This Python script processes raw club data and generates similarity scores:
 
 ```bash
 # Run from the parent directory (CampusCompass/)
-python TaggingClubIdentity.py
+python AllTagging.py
 ```
 
 **What it does:**
 - Reads `NicosScrapedData.csv` (raw club data)
 - Uses machine learning (SentenceTransformers) to analyze club descriptions
-- Generates similarity scores for identity characteristics:
-  - Race/ethnicity categories
-  - Gender preferences
-  - Greek life involvement
-  - LGBTQ+ community
-  - Religious affiliations
-- Outputs `IdentityScored.csv`
+- Generates similarity scores for both interest tags AND identity characteristics:
+  - **Interest tags**: 42 categories like "Leadership", "Technology", "Community Service"
+  - **Identity characteristics**: Race/ethnicity, gender, Greek life, LGBTQ+, religion, academic majors
+- Applies threshold-based processing for identity categories
+- Outputs `newTagsWithIdentity.csv`
 
 **Key configurations in the script:**
-- **Race threshold**: 0.6 (line 147)
-- **Gender threshold**: 0.575 (line 148)
-- **LGBTQ threshold**: 0.65 (line 150)
-- **Greek life**: Keyword-based detection (line 149)
+- **Race threshold**: 0.6 (line ~240)
+- **Gender threshold**: 0.575 (line ~241)
+- **LGBTQ threshold**: 0.65 (line ~243)
+- **Greek life**: Keyword-based detection (line ~242)
 
 ### Step 2: Move CSV to React App
 
-After running `TaggingClubIdentity.py`, copy the output file:
+After running `AllTagging.py`, copy the output file:
 
 ```bash
 # Copy the generated CSV to the React app
-cp IdentityScored.csv my-app/public/csv_folder/newTagsWithIdentity.csv
+cp newTagsWithIdentity.csv my-app/public/csv_folder/newTagsWithIdentity.csv
 ```
 
 **Important**: The CSV must be in `public/csv_folder/` because React can only access files in the `public` directory at runtime.
