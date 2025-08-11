@@ -1,53 +1,400 @@
-# Getting Started with Create React App
+# CampusCompass - Club Recommendation System
+
+CampusCompass is a React-based web application that helps students find clubs and organizations that match their interests and identity. The system uses machine learning to analyze club descriptions and creates personalized recommendations based on user preferences.
+
+## 🎯 Overview
+
+The application works in two main phases:
+1. **Data Processing Phase**: Python scripts analyze club data and generate similarity scores
+2. **User Interface Phase**: React app provides an interactive quiz and displays recommendations
+
+## 📁 Project Structure
+
+```
+my-app/
+├── public/
+│   └── csv_folder/           # CSV data files
+│       ├── newTagsWithIdentity.csv  # Main club data with scores
+│       └── tagsAndIdentity.csv      # Backup/alternative data
+├── src/
+│   ├── components/           # Reusable UI components
+│   ├── context/             # React context for state management
+│   ├── data/                # Configuration files
+│   │   ├── questions.js     # Quiz questions by category
+│   │   ├── tags.js          # Interest tag definitions
+│   │   └── identity.js      # Identity questions and options
+│   ├── pages/               # Main application screens
+│   ├── styles/              # CSS styling
+│   └── utils/               # Core algorithm logic
+│       └── quizUtils.js     # Recommendation algorithms
+└── package.json
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation & Running
+```bash
+cd my-app
+npm install
+npm start
+```
+
+The application will open at `http://localhost:3000`
+
+## 📊 Data Pipeline: From Club Data to Recommendations
+
+### Step 1: Generate Club Data CSV
+
+**File**: `../TaggingClubIdentity.py` (located in parent directory)
+
+This Python script processes raw club data and generates similarity scores:
+
+```bash
+# Run from the parent directory (CampusCompass/)
+python TaggingClubIdentity.py
+```
+
+**What it does:**
+- Reads `NicosScrapedData.csv` (raw club data)
+- Uses machine learning (SentenceTransformers) to analyze club descriptions
+- Generates similarity scores for identity characteristics:
+  - Race/ethnicity categories
+  - Gender preferences
+  - Greek life involvement
+  - LGBTQ+ community
+  - Religious affiliations
+- Outputs `IdentityScored.csv`
+
+**Key configurations in the script:**
+- **Race threshold**: 0.6 (line 147)
+- **Gender threshold**: 0.575 (line 148)
+- **LGBTQ threshold**: 0.65 (line 150)
+- **Greek life**: Keyword-based detection (line 149)
+
+### Step 2: Move CSV to React App
+
+After running `TaggingClubIdentity.py`, copy the output file:
+
+```bash
+# Copy the generated CSV to the React app
+cp IdentityScored.csv my-app/public/csv_folder/newTagsWithIdentity.csv
+```
+
+**Important**: The CSV must be in `public/csv_folder/` because React can only access files in the `public` directory at runtime.
+
+## 🎯 Core System Components
+
+### 1. Tags System (`src/data/tags.js`)
+
+Defines 42 interest categories that clubs are scored against:
+
+```javascript
+export const ALL_TAGS = {
+  1: ["Leadership", 1],
+  2: ["Teamwork", 2],
+  3: ["Community Service", 3],
+  // ... 39 more tags
+  42: ["Robotics & AI", 42]
+};
+```
+
+**To modify tags:**
+1. Edit the `ALL_TAGS` object in `tags.js`
+2. Update questions in `questions.js` to reference new tag IDs
+3. Re-run the tagging scripts with new tag categories
+
+### 2. Questions System (`src/data/questions.js`)
+
+Organizes quiz questions by category. Each question maps to specific tag IDs:
+
+```javascript
+export const CATEGORY_QUESTIONS = {
+  "Community Service & Advocacy": [
+    ["Are you interested in direct volunteering?", [3, 2, 25]],
+    // Question text maps to array of relevant tag IDs
+  ]
+};
+```
+
+**To modify questions:**
+1. Edit question text
+2. Update the associated tag ID arrays
+3. Ensure tag IDs exist in `tags.js`
+
+### 3. Identity System (`src/data/identity.js`)
+
+Defines demographic and background questions:
+
+```javascript
+export const IDENTITY_OPTIONS = {
+  "What gender do you identify with?": [
+    { value: 'man men', label: 'Male' },
+    { value: 'woman women', label: 'Female' }
+  ]
+};
+```
+
+**Important**: The `value` field must match column names in the CSV data exactly.
+
+## 🔧 Making Changes for Different Use Cases
+
+### Adding New Interest Tags
+
+1. **Update tags.js**:
+```javascript
+export const ALL_TAGS = {
+  // existing tags...
+  43: ["New Interest Category", 43]
+};
+```
+
+2. **Update questions.js**:
+```javascript
+["New question about the interest?", [43, 2, 5]]
+```
+
+3. **Update data processing**:
+   - Modify `TaggingClubs.py` to include the new tag
+   - Re-run the tagging process
+   - Update CSV file
+
+### Changing Main Categories and Tag Associations
+
+The system organizes questions into main categories (like "Community Service & Advocacy", "Arts & Culture", etc.). Each category contains questions that map to specific tags. Here's how to modify this structure:
+
+**File**: `src/data/questions.js`
+
+#### Adding a New Main Category:
+
+```javascript
+export const CATEGORY_QUESTIONS = {
+  // existing categories...
+  "New Category Name": [
+    ["Question about interest 1?", [tag1, tag2, tag3]],
+    ["Question about interest 2?", [tag4, tag5]],
+    ["Question about interest 3?", [tag1, tag6, tag7]]
+  ]
+};
+```
+
+#### Modifying Existing Categories:
+
+1. **Change category name**: Update the key in `CATEGORY_QUESTIONS`
+2. **Add/remove questions**: Add or remove question arrays within a category
+3. **Change tag associations**: Modify the tag ID arrays for each question
+
+#### Example - Restructuring "Technology & Engineering":
+
+```javascript
+"Technology & Engineering": [
+  // Old question
+  ["Are you interested in competitive coding?", [7, 40, 18]],
+  // New question with different tag focus
+  ["Do you want to build mobile apps?", [7, 40, 15, 38]],
+  // Completely new question
+  ["Are you interested in data science and analytics?", [7, 16, 22, 40]]
+]
+```
+
+#### Important Considerations:
+
+- **Tag IDs must exist** in `tags.js` - verify all referenced tag IDs are defined
+- **Question distribution** - ensure each tag appears in multiple questions for better scoring
+- **Category balance** - try to have 6-8 questions per category for good user experience
+- **Update UI** - if you change category names, update any hardcoded references in React components
+
+#### Required Code Changes When Modifying Categories:
+
+When you change main categories, you **must** update these functions:
+
+**1. Update `renameCategoryToNumber` function** (`src/utils/quizUtils.js`, line ~442):
+
+```javascript
+export function renameCategoryToNumber(categoryName) {
+  if (categoryName === "Your New Category Name") return 25; // Map to appropriate tag ID
+  if (categoryName === "Community Service & Advocacy") return 4;
+  if (categoryName === "Arts & Culture") return 8;
+  // ... existing mappings
+}
+```
+
+**2. If you remove categories**, delete the corresponding mapping lines.
+
+**3. If you change category names**, update both the condition and keep the same tag number:
+
+```javascript
+// Old:
+if (categoryName === "Sports & Recreation") return 18;
+// New:
+if (categoryName === "Athletics & Fitness") return 18; // Same tag ID, new name
+```
+
+#### Why This Matters:
+
+The `renameCategoryToNumber` function is used by `applyCategoryInterestScores` to give bonus points when users select categories on the home page. If the mapping is wrong:
+- Users won't get bonus scores for their selected categories
+- The recommendation algorithm will be less accurate
+- The app may show unexpected results
+
+#### Testing Your Changes:
+
+1. Run the app and navigate through categories
+2. Complete a quiz and verify tags are scored correctly
+3. Check that club recommendations reflect the new category structure
+4. **Test category selection**: Select categories on home page and verify they influence results
+
+### Modifying Identity Categories
+
+1. **Update identity.js**:
+```javascript
+export const IDENTITY_OPTIONS = {
+  "New identity question?": [
+    { value: 'csv_column_name', label: 'Display Name' }
+  ]
+};
+```
+
+2. **Update CSV columns**: Ensure the CSV has matching column names
+
+3. **Update Python processing**: Modify `TaggingClubIdentity.py` to handle new categories
+
+### Changing Similarity Algorithm
+
+**File**: `src/utils/quizUtils.js`, `cosineSimilarity` function
+
+The current algorithm uses cosine similarity. To modify:
+
+```javascript
+export function cosineSimilarity(vecA, vecB) {
+  // Current: cosine similarity (angle between vectors)
+  // Alternative: Euclidean distance, Manhattan distance, etc.
+}
+```
+
+### Adjusting Club Ranking
+
+**File**: `src/utils/quizUtils.js`, `rankClubsBySimilarity` function
+
+Key areas to modify:
+
+1. **Identity weight** (line ~280):
+```javascript
+if (userIdentityCols.includes(identitiesToInclude[i])) {
+  userVector.push(2.0); // Increase for stronger identity weighting
+}
+```
+
+2. **Number of results** (line ~320):
+```javascript
+.slice(0, 10) // Change to show more/fewer recommendations
+```
+
+3. **Minimum similarity threshold**:
+```javascript
+.filter(club => club.similarity > 0.3) // Only show clubs above threshold
+```
+
+## 🎨 UI Customization
+
+### Adding New Quiz Categories
+
+1. **Update questions.js** with new category:
+```javascript
+"New Category Name": [
+  ["Question 1?", [tag1, tag2]],
+  ["Question 2?", [tag3, tag4]]
+]
+```
+
+2. **Update CategoriesPage.js** if you want custom category descriptions
+
+### Styling and Themes
+
+- Global styles: `src/styles/global.css`
+- Component-specific styles: `src/pages/*.css` and `src/components/*.css`
+
+## 🐛 Common Issues and Solutions
+
+### CSV File Not Loading
+- Ensure the CSV is in `public/csv_folder/`
+- Check that column names match exactly with identity.js values
+- Verify CSV is properly formatted (no extra commas, quotes)
+
+### Tags Not Appearing in Results
+- Check that tag IDs in questions.js exist in tags.js
+- Verify the CSV has columns for all referenced tags
+- Ensure the tag scoring in Python scripts includes your tags
+
+### Identity Filtering Not Working
+- Confirm identity values in identity.js match CSV column names exactly
+- Check that the Python processing script handles your identity categories
+- Verify CSV data has 1.0/0.0 values for identity columns
+
+### Low Similarity Scores
+- Increase the boost multiplier in calcUserTagScores
+- Lower the minimum questions threshold for boosting
+- Adjust identity weighting in rankClubsBySimilarity
+
+## 📝 Development Workflow
+
+### For New Semesters/Schools:
+
+1. **Update club data**:
+   - Replace `NicosScrapedData.csv` with new club information
+   - Run `TaggingClubIdentity.py`
+   - Copy output to `my-app/public/csv_folder/`
+
+2. **Adjust for local context**:
+   - Modify identity categories in `identity.js`
+   - Update questions in `questions.js` for relevant activities
+   - Adjust tags in `tags.js` for available club types
+
+3. **Test and validate**:
+   - Run the React app
+   - Test with various user profiles
+   - Verify recommendations make sense
+
+### For Different Organizations:
+
+1. **Corporate version**: Focus on professional development tags
+2. **High school version**: Adjust maturity level of questions and categories
+3. **Community groups**: Emphasize local service and cultural activities
+
+## 🔄 Data Flow Summary
+
+```
+Raw Club Data → Python ML Processing → CSV with Scores → React App → User Quiz → Similarity Matching → Recommendations
+```
+
+1. **Input**: Club descriptions and details
+2. **Processing**: Machine learning analysis creates numerical scores
+3. **Storage**: CSV file with all club data and scores
+4. **Interface**: React app presents quiz to users
+5. **Algorithm**: Cosine similarity matches user preferences to clubs
+6. **Output**: Ranked list of recommended clubs
+
+This system provides a scalable foundation for any club or organization recommendation platform!
+
+---
+
+## Create React App Information
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Available Scripts
 
-In the project directory, you can run:
+#### `npm start`
+Runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it.
 
-### `npm start`
+#### `npm test`
+Launches the test runner in interactive watch mode.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### `npm run build`
+Builds the app for production to the `build` folder.
 
 ### Analyzing the Bundle Size
 
