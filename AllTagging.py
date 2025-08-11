@@ -4,53 +4,55 @@ import torch
 from sklearn import preprocessing
 
 DEVICE = "mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"
-model = SentenceTransformer("all-MiniLM-L6-v2")
+model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 df = pd.read_csv("NicosScrapedData.csv")
 
 name_desc = df["Club Name"] + " " + df["Description Excerpt"]
 
 # maybe add lgbtq tag
 all_identities = [
-  "Leadership Development",
-  "Professional Networking",
-  "Academic Support",
-  "Community Service",
-  "Social Justice",
-  "Environmental Sustainability",
-  "Technical Skills",
-  "Creative Expression",
-  "Performance Arts",
-  "Visual Arts",
-  "Cultural Awareness",
-  "Diversity & Inclusion",
-  "Identity Exploration",
-  "Peer Mentorship",
-  "Career Preparation",
-  "Entrepreneurship",
-  "Research & Innovation",
-  "Physical Fitness",
-  "Competitive Activities",
-  "Recreational Sports",
-  "Outdoor Adventure",
-  "Health & Wellness",
-  "Mental Health Support",
-  "Spiritual Growth",
-  "Faith Communities",
-  "Global Perspectives",
-  "Political Engagement",
-  "Media Production",
-  "Technology & Computing",
-  "Engineering Projects",
-  "Scientific Exploration",
-  "Agricultural Studies",
-  "Business Skills",
-  "Industry Connections",
-  "Social Activities",
-  "Campus Traditions",
-  "Educational Outreach",
-  "Skill Development",
-  "Discussion Forums",
-  "Collaborative Projects",
+    "Leadership",
+    "Teamwork",
+    "Community Service",
+    "Advocacy",
+    "Social Justice",
+    "Sustainability",
+    "Technology",
+    "Arts & Crafts",
+    "Performing Arts",
+    "Cultural Expression",
+    "Diversity & Inclusion",
+    "Mentorship",
+    "Career Growth",
+    "Networking",
+    "Entrepreneurship",
+    "Research",
+    "Fitness",
+    "Competitive Sports",
+    "Outdoor Activities",
+    "Wellness",
+    "Mental Health",
+    "Academic Focus",
+    "Debate & Discussion",
+    "Gaming",
+    "Social Events",
+    "Media & Film",
+    "Writing & Literature",
+    "Music",
+    "Dance",
+    "Fashion & Design",
+    "Food & Cooking",
+    "Language & Culture",
+    "Political Action",
+    "Fundraising",
+    "Tutoring & Teaching",
+    "DIY & Making",
+    "Faith & Spirituality",
+    "Professional Skills",
+    "Public Speaking",
+    "Problem Solving",
+    "Gaming & eSports",
+    "Robotics & AI",
     #______________ Identity stuff _________________
     #Gender
     "woman women",
@@ -71,7 +73,6 @@ all_identities = [
     "Jewish Community and Judaism",
     "Hindu",
     "Buddhism",
-    "Muslim",
     "Sikh",
     #Major
     "Aerospace Engineering",
@@ -248,7 +249,7 @@ def main():
     greek_life_threshold(sim_df)
     lgbtq_threshold(sim_df, 0.65)
 
-    sim_df.to_csv('tagsAndIdentity.csv', index=False)
+    sim_df.to_csv('newTagsWithIdentity.csv', index=False)
 
     print(f"Device is {DEVICE}")
 
