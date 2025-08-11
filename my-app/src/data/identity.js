@@ -104,6 +104,7 @@ export const IDENTITY_OPTIONS = {
     { value: 'Islam', label: 'Islam' },
     { value: 'Hindu', label: 'Hinduism' },
     { value: 'Buddhism', label: 'Buddhism' },
+    { value: 'Sikh', label: 'Sikhism' },
     { value: 'other', label: 'Atheist' },
     { value: 'other', label: 'Agnostic' },
     { value: 'other', label: 'Other/Decline To Say' }
@@ -125,7 +126,7 @@ export const ONLY_IDENTITIES = [
   * 2
   * 6
   * 65
-  * 5
+  * 6
   * 1
   * 1
   */
@@ -147,7 +148,7 @@ export const ONLY_IDENTITIES = [
     "Physics", "Plant Sciences", "Political Science", "Public Health", "Psychology", 
     "Recreation, Parks, and Tourism Administration", "Sociology", "Software Engineering", "Spanish", 
     "Statistics", "Theatre Arts", "Wine and Viticulture"],
-  ["Christian", "Jewish Community and Judaism", "Islam", "Hindu", "Buddhism"],
+  ["Christian", "Jewish Community and Judaism", "Islam", "Hindu", "Buddhism", "Sikh"],
   ["lgbtq"],
   ["Greek"]
 ]
