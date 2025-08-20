@@ -16,7 +16,7 @@ all_identities = [
     "Community Service",
     "Advocacy",
     "Social Justice",
-    "Sustainability",
+    "Architecture & Urban Planning",
     "Technology",
     "Arts & Crafts",
     "Performing Arts",
@@ -34,25 +34,27 @@ all_identities = [
     "Mental Health",
     "Academic Focus",
     "Debate & Discussion",
-    "Gaming",
+    "Virtual Reality",
     "Social Events",
     "Media & Film",
-    "Writing & Literature",
+    "Journalism",
     "Music",
     "Dance",
-    "Fashion & Design",
-    "Food & Cooking",
-    "Language & Culture",
+    "UI Design",
+    "Hospitality",
+    "International Relations",
     "Political Action",
     "Fundraising",
     "Tutoring & Teaching",
     "DIY & Making",
-    "Faith & Spirituality",
+    "Ethics",
     "Professional Skills",
     "Public Speaking",
     "Problem Solving",
-    "Gaming & eSports",
+    "Analytics",
     "Robotics & AI",
+    "Space & Astronomy",
+    "Gaming & eSports",
     #______________ Identity stuff _________________
     #Gender
     "woman women",
@@ -249,7 +251,7 @@ def main():
     greek_life_threshold(sim_df)
     lgbtq_threshold(sim_df, 0.65)
 
-    sim_df.to_csv('newTagsWithIdentity.csv', index=False)
+    sim_df.to_csv('44TagsWithIdentity.csv', index=False)
 
     print(f"Device is {DEVICE}")
 

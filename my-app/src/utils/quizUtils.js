@@ -317,6 +317,13 @@ export function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols)
   console.log("User Identity Columns:", userIdentityCols);
   console.log("Columns to Keep:", allCols);
 
+  // List tag name and associated value for it:
+  for (let i = 0; i < userVector.length; i++) {
+    const tagName = allCols[i+2];
+    const tagValue = userVector[i];
+    console.log(`Tag: ${tagName}, Value: ${tagValue}`);
+  }
+
   // STEP 4: Calculate similarity for each club
   
   let results = [];
@@ -440,7 +447,7 @@ export function applyCategoryInterestScores(tempUserTags, selectedCategories) {
  * Maps a category name to a corresponding tag number.
  */
 export function renameCategoryToNumber(categoryName) {
-  if (categoryName === "Community Service & Advocacy") return 4; // Community Service is tag 4
+  if (categoryName === "Community Service & Advocacy") return 3; // Community Service is tag 3
   if (categoryName === "Arts & Culture") return 8; // Creative Expression is tag 8
   if (categoryName === "Sports & Recreation") return 18; // Physical Fitness is tag 18
   if (categoryName === "Professional Development & Networking") return 2; // Professional Networking is tag 2

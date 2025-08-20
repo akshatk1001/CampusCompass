@@ -258,7 +258,96 @@ export const IDENTITY_OPTIONS = {
 
 2. **Update CSV columns**: Ensure the CSV has matching column names
 
-3. **Update Python processing**: Modify `TaggingClubIdentity.py` to handle new categories
+3. **Update Python processing**: Modify `AllTagging.py` to handle new categories
+
+#### Required Code Changes When Modifying Identities:
+
+When you add, remove, or change identity categories, you **must** update these components:
+
+**1. Update `ONLY_IDENTITIES` array** (`src/data/identity.js`, line ~124):
+
+```javascript
+export const ONLY_IDENTITIES = [
+  ["man men", "woman women"],
+  ["White European Italian", "Black African American", "Native American", "Asian", "Hispanic", "Native Hawaiian or Other Pacific Islander"],
+  // Add your new identity group here:
+  ["New Identity Value 1", "New Identity Value 2", "New Identity Value 3"],
+  ["Christian", "Jewish Community and Judaism", "Islam", "Hindu", "Buddhism"],
+  ["lgbtq"],
+  ["Greek"]
+]
+```
+
+**2. Update the Python processing script** (`AllTagging.py`):
+- Add new identity categories to the `all_identities` list
+- Add corresponding threshold functions if needed
+- Update the `main()` function to process new categories
+
+**3. Update the CSV structure**:
+- Ensure your CSV has columns matching the new identity values
+- Run `AllTagging.py` to regenerate the CSV with new columns
+
+#### Why `ONLY_IDENTITIES` Matters:
+
+The `ONLY_IDENTITIES` array is used by the `getRelevantIdentities` function in `quizUtils.js`. It:
+- Groups related identity options together
+- Expands user selections to include all related identities in a group
+- Ensures proper filtering and matching in the recommendation algorithm
+
+#### Example - Adding a New Identity Category:
+
+Let's say you want to add "Year in School":
+
+**1. Add to `IDENTITY_QUESTIONS`**:
+```javascript
+export const IDENTITY_QUESTIONS = {
+  "Identity": [
+    // existing questions...
+    "What year are you in school?"
+  ]
+};
+```
+
+**2. Add to `IDENTITY_OPTIONS`**:
+```javascript
+"What year are you in school?": [
+  { value: 'Freshman', label: 'Freshman' },
+  { value: 'Sophomore', label: 'Sophomore' },
+  { value: 'Junior', label: 'Junior' },
+  { value: 'Senior', label: 'Senior' },
+  { value: 'Graduate', label: 'Graduate Student' },
+  { value: 'other', label: 'Other/Decline To Say' }
+]
+```
+
+**3. Add to `ONLY_IDENTITIES`**:
+```javascript
+export const ONLY_IDENTITIES = [
+  // existing groups...
+  ["Freshman", "Sophomore", "Junior", "Senior", "Graduate"], // New group
+  ["Greek"]
+]
+```
+
+**4. Update `AllTagging.py`**:
+```python
+all_identities = [
+    # existing identities...
+    "Freshman",
+    "Sophomore", 
+    "Junior",
+    "Senior",
+    "Graduate"
+]
+```
+
+#### Testing Identity Changes:
+
+1. **Test the identity page**: Verify new questions appear correctly
+2. **Test selection**: Ensure new identity options can be selected
+3. **Test CSV generation**: Run `AllTagging.py` and verify new columns exist
+4. **Test recommendations**: Complete a quiz and verify identity filtering works
+5. **Check console**: Look for warnings about missing columns or identity mismatches
 
 ### Changing Similarity Algorithm
 

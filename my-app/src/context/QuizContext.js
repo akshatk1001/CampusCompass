@@ -177,7 +177,7 @@ export function QuizProvider({ children }) {
   // useEffect runs when component first appears - perfect for loading data
   useEffect(() => {
     // Download the CSV file from the public folder
-    fetch('./csv_folder/newTagsWithIdentity.csv')
+    fetch('./csv_folder/44TagsWithIdentity.csv')
       .then(response => response.text()) // Convert downloaded file to text
       .then(text => {
         // Parse CSV text into JavaScript arrays using Papa Parse library
