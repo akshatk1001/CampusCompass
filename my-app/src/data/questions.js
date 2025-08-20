@@ -5,66 +5,69 @@
  */
 export const CATEGORY_QUESTIONS = {
   "Community Service & Advocacy": [
-    ["Would you like to regularly volunteering for community service projects?", [1, 4, 35, 36]],
-    ["Do you enjoy advocacy work that involves direct activism and public demonstrations?", [5, 12, 13, 27]],
-    ["Are you willing to take leadership roles in organizing sustainability initiatives?", [1, 6, 21, 31]],
-    ["Are you interested in providing one-on-one mentoring to underserved students?", [3, 14, 37, 38]],
-    ["Do you like engaging in structured debates about controversial social issues rather than casual discussions?", [5, 11, 26, 39]],
-    ["Are you comfortable with public speaking for activism campaigns?", [4, 5, 13, 28]],
-    ["Do you enjoy administrative and planning aspects of community projects more than direct service work?", [1, 4, 40, 12]]
+    ["Are you interested in presenting policy proposals to campus or city officials?", [39, 1, 4, 33, 23]],
+    ["Would you participate in a debate on a controversial social issue?", [23, 5, 39, 33, 4]],
+    ["Do you prefer working on environmental/sustainability initiatives over other types of service?", [6, 4, 19, 3]],
+    ["Would you coordinate/lead volunteers for a recurring service project rather than join an ongoing project?", [1, 2, 3, 38]],
+    ["Would you collect donations or run a fundraiser?", [34, 3, 4]],
+    ["Would you join a campaign focused on equity or social justice?", [5, 11, 33, 4, 23]],
+    ["Would you commit at least two hours every week to an ongoing, hands-on service project?", [3, 2, 25]],       
   ],
+
   "Arts & Culture": [
-    ["Do you prefer creating visual art yourself rather than appreciating others' work?", [8, 10, 28, 38]],
-    ["Would you be willing to perform on stage in front of an audience?", [8, 9, 35, 40]],
-    ["Do you actively seek out cultural experiences from traditions different from your own?", [11, 12, 13, 26]],
-    ["Are you drawn to artistic content that challenges societal norms rather than content focused on aesthetics?", [5, 8, 10, 13]],
-    ["Would you spend time learning technical aspects of media production like sound engineering or video editing?", [7, 8, 28, 38]],
-    ["Do you prefer independent creative projects rather than collaborative ones?", [8, 9, 35, 40]],
-    ["Do you enjoy attending performing arts events?", [9, 10, 35, 36]]
+    ["Do you create art (drawing/painting/sculpting) at least monthly on your own?", [8, 36, 25]],
+    ["Would you rehearse weekly for a performance (theater, music, or dance)?", [9, 28, 2, 29, 26, 39]],
+    ["Would you perform or exhibit at public cultural events?", [10, 9, 39, 28, 29, 26, 30, 8, 25, 32]],
+    ["Would you join a language or cultural exchange group?", [32, 10, 11, 25]],
+    ["Are you interested in the business side of fashion and other creative industries?", [30, 15, 38, 8]],
+    ["Would you be interested in producing a film or podcast episode to publish?", [26, 8, 40, 9, 27]],
+    ["Would you join a group that meets biweekly to analyze books in depth?", [27, 10, 22, 23]],
   ],
+
   "Sports & Recreation": [
-    ["Do you prefer team sports over individual sports?", [18, 20, 35, 40]],
-    ["Do you enjoy outdoor activities like rock climbing or backpacking?", [18, 21, 22, 35]],
-    ["Do you enjoy the competitive aspects of sports more than the recreational aspects?", [1, 18, 19, 20]],
-    ["Are you interested in a sports club that practices multiple times a week?", [18, 20, 35, 38]],
-    ["Do you prefer structured fitness routines over casual, spontaneous physical activities?", [18, 22, 23, 38]],
-    ["Would you take on organizing responsibilities for sports events rather than just participating?", [1, 4, 20, 36]],
-    ["Are you interested in less mainstream sports?", [11, 18, 20, 26]]
+    ["Would you join structured group fitness classes (ie. pilates, yoga)?", [17, 20, 25, ]],
+    ["Are you interested in outdoor trips like hikes or camping?", [19, 17, 25, 20]],
+    ["Are you interested in joining a competitive sports team?", [18, 2, 17]],
+    ["Would you join an eSports team or club?", [41, 24, 25, 2]],
+    ["Are you interested in the strategy and management side of sports?", [18, 1, 38, 13, 40]],
+    ["Are you looking for casual, drop-in sports and recreational games?", [17, 20, 25]],
   ],
+
   "Professional Development & Networking": [
-    ["Would you commit to taking on leadership positions with regular responsibilities?", [1, 2, 15, 38]],
-    ["Do you prefer structured networking events over informal professional socializing?", [2, 15, 16, 34]],
-    ["Are you interested in starting your own business or venture while in college?", [16, 33, 34, 38]],
-    ["Would you prioritize projects that develop professional skills even if they don't align with your personal interests?", [7, 15, 38, 40]],
-    ["Do you prefer being a mentor to others rather than receiving mentorship yourself?", [3, 14, 15, 37]],
-    ["Are you willing to pursue career paths that prioritize social impact even if they offer lower financial compensation?", [4, 5, 15, 37]],
-    ["Do you enjoy the planning and organizing aspects of professional events more than attending them?", [1, 2, 15, 33]]
+    ["Would you enter case competitions or other competitive professional events?", [38, 13, 2, 39, 40]],
+    ["Would you attend large, formal networking events?", [14, 13, 25, 39, 38]],
+    ["Are you working on or want to start/join a startup venture?", [15, 1, 40, 38, 14, 13, 2]],
+    ["Would you seek a professional mentor this year to meet biweekly?", [12, 13, 38, 14]],
+    ["Are you interested in corporate social responsibility/HR topics?", [11, 39, 38, 13]],
+    ["Would you attend workshops to develop technical skills often (e.g., Excel, public speaking)?", [13, 14, 38, 39, 22]],
+    ["Would you join an industry-specific club (e.g., finance, tech)?", [13, 14, 22, 1, 38]],
   ],
+
   "Technology & Engineering": [
-    ["Do you enjoy working on technical projects that require coding or programming skills?", [7, 29, 30, 38]],
-    ["Would you rather develop new approaches than apply existing solutions to problems?", [6, 17, 30, 40]],
-    ["Are you interested in joining a club that explores novel technologies?", [17, 29, 30, 31]],
-    ["Are you interested in participating in competitive hackathons or engineering contests?", [7, 19, 29, 30]],
-    ["Do you prefer working on projects in collaborative teams rather than independently?", [17, 29, 31, 40]],
-    ["Are you interested in working on technological solutions focused on social good rather than those that advance business efficiency?", [4, 6, 29, 30]],
-    ["Would you regularly attend industry conferences or technical talks even if held after hours or on weekends?", [2, 15, 29, 34]]
+    ["Are you interested in the theory and research of AI and machine learning?", [42, 22, 7, 16]],
+    ["Would you participate in hackathons or team coding contests?", [7, 13, 14, 40, 2]],
+    ["Do you enjoy hands-on hardware projects, like building robots or circuits?", [7, 40, 36, 42, 2]],
+    ["Are you interested in using technology/engineering for social good projects?", [40, 5, 6, 3, 4]],
+    ["Would you prefer product management (planning, testing, roadmap) rather than development?", [1, 7, 40, 15, 13]],
+    ["Are you interested in the business and startup side of the tech industry?", [15, 1, 40, 38, 14, 13, 2]],
+    ["Do you want to contribute to a large, open-source project with a team?", [7, 2, 40, 14, 36]]
   ],
+
   "Health & Wellness": [
-    ["Do you maintain a lifestyle centered around fitness and working out?", [18, 20, 22, 38]],
-    ["Would you participate in regular group discussions about mental health challenges and coping strategies?", [22, 23, 39, 14]],
-    ["Are you interested in incorporating mindfulness or meditation practices into your daily routine?", [22, 23, 24, 25]],
-    ["Do you actively seek out information about holistic or alternative health approaches?", [11, 22, 26, 37]],
-    ["Would you volunteer to lead or facilitate wellness programs for your peers?", [4, 14, 22, 23]],
-    ["Do you prefer structured outdoor fitness activities over gym-based workouts?", [18, 21, 22, 35]],
-    ["Are you willing to make significant lifestyle changes to reduce your environmental impact for health reasons?", [6, 22, 31, 39]]
+    ["Would you join a peer-led mental health support circle?", [21, 12, 20, 25, 11]],
+    ["Are you interested in training for endurance events like marathons or triathlons?", [20, 17, 18, 19]],
+    ["Would you practice meditation or mindfulness in a group?", [21, 20, 37]],
+    ["Would you serve as a certified wellness peer educator or coach?", [35, 12, 20, 21]],
+    ["Are you interested in joining a performance team that competes regularly (ie. dance)?", [29, 17, 18, 9, 2]],
   ],
+
   "Academic & Educational": [
-    ["Do you regularly pursue academic interests outside of class and coursework?", [3, 17, 31, 39]],
-    ["Would you commit to a research project that requires additional work outside of your classes and coursework?", [3, 17, 31, 39]],
-    ["Do you prefer tutoring others in academic subjects rather than receiving help yourself?", [3, 14, 37, 38]],
-    ["Are you willing to learn about diverse cultural perspectives even if they don't relate to your major?", [11, 13, 26, 37]],
-    ["Would you be interested in participating in community-based learning projects?", [3, 4, 17, 37]],
-    ["Do you actively seek out opportunities to work directly with faculty on research or creative projects?", [2, 3, 15, 34]],
-    ["Would you regularly participate in debates and other knowledge competitions?", [3, 19, 37, 39]]
+    ["Are you interested in joining a club that prepares for academic competitions (e.g., Model UN, Debate)?", [22, 23, 40, 39, 28]],
+    ["Would you join a faculty-led research lab or project?", [16, 22, 12, 13]],
+    ["Would you commit to a weekly study group for a tough class?", [22, 2, 35]],
+    ["Are you interested in tutoring classmates in a subject you know well?", [35, 12, 2, 38, 22]],
+    ["Are you interested in a club exclusively for students in your major?", [22, 14, 13, 25]],
+    ["Are you interested in a journal club, where you read and discuss academic papers?", [22, 23, 16]],
+    ["Do you enjoy attending academic conferences?", [22, 16, 39, 14, 13]]
   ]
 };
