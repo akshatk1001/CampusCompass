@@ -390,7 +390,7 @@ export function rankClubsBySimilarity(userVector, clubDataObj, userIdentityCols)
   results.sort((a, b) => b.similarity - a.similarity);
   
   // Return only the top 10 matches
-  return results.slice(0, 10);
+  return results.slice(0, 25);
 }
 
 /**
